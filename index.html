@@ -340,6 +340,86 @@
     </div>
   </section>
 
+  <!-- Mission Map -->
+  <section id="missions" class="py-20 px-8 bg-slate-50 dark:bg-slate-900">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Latest Missions</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Live from the field. Our pigeons are everywhere.</p>
+    <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
+      <div id="mission-map" class="w-full h-[500px]"></div>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      (function () {
+        var map = L.map('mission-map', { scrollWheelZoom: false }).setView([30, 0], 2);
+        var lightTiles = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        var darkTiles = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        var isDark = document.documentElement.classList.contains('dark');
+        var tileLayer = L.tileLayer(isDark ? darkTiles : lightTiles, {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+          maxZoom: 18
+        }).addTo(map);
+
+        // Update tiles when theme toggles
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+          setTimeout(function () {
+            var nowDark = document.documentElement.classList.contains('dark');
+            tileLayer.setUrl(nowDark ? darkTiles : lightTiles);
+          }, 50);
+        });
+
+        var missions = [
+          { lat: 52.52, lng: 13.405, title: 'Love Letter Delivery', pigeon: 'Madame Fleur', status: 'Completed', city: 'Berlin' },
+          { lat: 53.4808, lng: -2.2426, title: 'Newspaper Thief Surveillance', pigeon: 'Ghostie', status: 'Completed', city: 'Manchester' },
+          { lat: 30.2672, lng: -97.7431, title: 'HOA President Poop Strike', pigeon: 'Big Tony', status: 'Completed', city: 'Austin' },
+          { lat: 48.8566, lng: 2.3522, title: 'Urgent Love Letter Express', pigeon: 'Madame Fleur', status: 'In Flight', city: 'Paris' },
+          { lat: 35.6762, lng: 139.6503, title: 'Corporate Espionage Recon', pigeon: 'Ghostie', status: 'In Flight', city: 'Tokyo' },
+          { lat: 40.7128, lng: -74.006, title: 'Multi-Target Strike (3x)', pigeon: 'Big Tony', status: 'Completed', city: 'New York' },
+          { lat: -33.8688, lng: 151.2093, title: 'Birthday Bombdrop', pigeon: 'Turbo Dave', status: 'Completed', city: 'Sydney' },
+          { lat: 55.6761, lng: 12.5683, title: 'VIP Message Delivery', pigeon: 'Turbo Dave', status: 'In Flight', city: 'Copenhagen' },
+          { lat: 41.9028, lng: 12.4964, title: 'Skywriting Coo Proposal', pigeon: 'Madame Fleur', status: 'Completed', city: 'Rome' },
+          { lat: 37.7749, lng: -122.4194, title: 'Night Ops Surveillance', pigeon: 'Ghostie', status: 'In Flight', city: 'San Francisco' },
+          { lat: -22.9068, lng: -43.1729, title: 'Tactical Pooping (Priority)', pigeon: 'Big Tony', status: 'Completed', city: 'Rio de Janeiro' },
+          { lat: 25.2048, lng: 55.2708, title: 'Disguised Recon (Parrot Mode)', pigeon: 'Ghostie', status: 'Completed', city: 'Dubai' },
+        ];
+
+        var plumIcon = L.divIcon({
+          className: '',
+          html: '<div style="width:14px;height:14px;background:#7c3aed;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>',
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        });
+        var activeIcon = L.divIcon({
+          className: '',
+          html: '<div style="width:14px;height:14px;background:#f59e0b;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);animation:pulse 1.5s infinite;"></div>',
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        });
+
+        missions.forEach(function (m) {
+          var icon = m.status === 'In Flight' ? activeIcon : plumIcon;
+          var statusColor = m.status === 'In Flight' ? '#f59e0b' : '#7c3aed';
+          L.marker([m.lat, m.lng], { icon: icon })
+            .addTo(map)
+            .bindPopup(
+              '<div style="font-family:system-ui;min-width:160px;">' +
+              '<strong style="font-size:14px;">' + m.title + '</strong><br>' +
+              '<span style="color:#64748b;font-size:12px;">' + m.city + '</span><br>' +
+              '<span style="font-size:12px;">Pigeon: <strong>' + m.pigeon + '</strong></span><br>' +
+              '<span style="display:inline-block;margin-top:4px;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;color:#fff;background:' + statusColor + ';">' + m.status + '</span>' +
+              '</div>'
+            );
+        });
+      })();
+    </script>
+    <style>
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,.5); }
+        50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+      }
+    </style>
+  </section>
+
   <!-- Testimonials -->
   <section id="testimonials" class="py-20 px-8 bg-slate-50 dark:bg-slate-900">
     <h2 class="text-3xl font-extrabold text-center mb-3">Happy Customers</h2>
