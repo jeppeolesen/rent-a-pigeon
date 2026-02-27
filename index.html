@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent-A-Pigeon — Premium Pigeon Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            plum: { DEFAULT: '#7c3aed', dark: '#6d28d9' },
+            warm: '#f5f0eb',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="text-slate-800 bg-slate-50">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full bg-white/85 backdrop-blur-md border-b border-slate-200 z-50 px-8">
+    <div class="max-w-5xl mx-auto flex items-center justify-between h-16">
+      <a href="#" class="font-extrabold text-xl text-slate-800 no-underline">Rent-A-Pigeon</a>
+      <ul class="hidden sm:flex gap-8 list-none">
+        <li><a href="#services" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Services</a></li>
+        <li><a href="#how" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">How It Works</a></li>
+        <li><a href="#addons" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Add-Ons</a></li>
+        <li><a href="#pricing" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Pricing</a></li>
+        <li><a href="#testimonials" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Testimonials</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="min-h-screen flex items-center justify-center text-center px-8 pt-24 pb-16 bg-gradient-to-b from-warm to-slate-50">
+    <div class="max-w-2xl">
+      <div class="text-7xl mb-6" aria-hidden="true">&#x1F54A;&#xFE0F;</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-5">
+        Your message.<br><span class="text-plum">Their problem.</span>
+      </h1>
+      <p class="text-lg text-slate-500 max-w-xl mx-auto mb-10">
+        Rent a professionally trained pigeon for message delivery, aerial reconnaissance, or precision poop strikes. Available worldwide, feathers guaranteed.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="#pricing" class="inline-block px-8 py-3 rounded-full text-base font-semibold bg-plum text-white hover:bg-plum-dark hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Rent a Pigeon</a>
+        <a href="#services" class="hidden sm:inline-block px-8 py-3 rounded-full text-base font-semibold border-2 border-plum text-plum hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Learn More</a>
+      </div>
+      <div class="mt-10">
+        <p class="text-sm text-slate-400 mb-3">&#x1F3B5; Listen to our promotional jingle</p>
+        <audio controls class="mx-auto">
+          <source src="jingle.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trusted By -->
+  <section class="py-12 px-8 bg-white border-b border-slate-100">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-300 mb-8">Trusted by forward-thinking organizations</p>
+    <div class="relative max-w-5xl mx-auto overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+      <div class="flex gap-16 items-center animate-[scroll_30s_linear_infinite] w-max">
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">NASA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">WikiLeaks</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">IKEA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">MI6</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Domino's Pizza</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">The Vatican</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Tesla</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Hogwarts</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">FIFA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
+        <!-- duplicate set for seamless loop -->
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">NASA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">WikiLeaks</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">IKEA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">MI6</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Domino's Pizza</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">The Vatican</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Tesla</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Hogwarts</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">FIFA</span>
+        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
+      </div>
+    </div>
+    <style>
+      @keyframes scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+    </style>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-20 px-8 bg-white">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Our Services</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Three distinct pigeon packages, each backed by our ironclad Coo Guarantee.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+        <div class="text-5xl mb-4" aria-hidden="true">&#x1F4E8;</div>
+        <h3 class="text-xl font-bold mb-2">Message Delivery</h3>
+        <p class="text-slate-400 text-sm">Old-school charm meets modern reliability. Our pigeons navigate by magnetoreception and sheer willpower, delivering your handwritten notes rain or shine.</p>
+      </div>
+      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+        <div class="text-5xl mb-4" aria-hidden="true">&#x1F575;&#xFE0F;</div>
+        <h3 class="text-xl font-bold mb-2">Surveillance Ops</h3>
+        <p class="text-slate-400 text-sm">Nobody suspects the pigeon. Our elite recon birds blend into any urban environment, gathering intelligence while looking adorably clueless.</p>
+      </div>
+      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+        <div class="text-5xl mb-4" aria-hidden="true">&#x1F4A9;</div>
+        <h3 class="text-xl font-bold mb-2">Tactical Pooping</h3>
+        <p class="text-slate-400 text-sm">Sometimes words aren't enough. Our precision-trained pigeons deliver payloads with pinpoint accuracy to the target of your choosing. No questions asked.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how" class="py-20 px-8 bg-warm">
+    <h2 class="text-3xl font-extrabold text-center mb-3">How It Works</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">From booking to bombing run, we keep it simple.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
+      <div>
+        <div class="w-12 h-12 bg-plum text-white font-extrabold text-xl rounded-full inline-flex items-center justify-center mb-4">1</div>
+        <h3 class="font-bold mb-1">Pick Your Pigeon</h3>
+        <p class="text-slate-400 text-sm">Browse our roster of certified professionals and choose the bird that fits your mission.</p>
+      </div>
+      <div>
+        <div class="w-12 h-12 bg-plum text-white font-extrabold text-xl rounded-full inline-flex items-center justify-center mb-4">2</div>
+        <h3 class="font-bold mb-1">Brief the Bird</h3>
+        <p class="text-slate-400 text-sm">Provide target coordinates, message content, or a photo of the person you'd like redecorated.</p>
+      </div>
+      <div>
+        <div class="w-12 h-12 bg-plum text-white font-extrabold text-xl rounded-full inline-flex items-center justify-center mb-4">3</div>
+        <h3 class="font-bold mb-1">Sit Back &amp; Coo</h3>
+        <p class="text-slate-400 text-sm">Your pigeon deploys within 24 hours. Track progress in real time via our Bird's-Eye Dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add-Ons -->
+  <section id="addons" class="py-20 px-8 bg-white">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Add-On Services</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Supercharge any package with these premium extras.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F48C;</div>
+        <h3 class="font-bold mb-1">Love Letter Express</h3>
+        <p class="text-slate-400 text-xs mb-3">Rose-petal-scented delivery with a dramatic cooing entrance. Includes one complimentary wing-flutter serenade.</p>
+        <div class="text-plum font-extrabold text-lg">+$12</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F4F8;</div>
+        <h3 class="font-bold mb-1">Photo Evidence</h3>
+        <p class="text-slate-400 text-xs mb-3">Our birds wear micro-cams and capture high-res proof of delivery, surveillance, or impact. Sent to your inbox within the hour.</p>
+        <div class="text-plum font-extrabold text-lg">+$19</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F3AD;</div>
+        <h3 class="font-bold mb-1">Disguise Kit</h3>
+        <p class="text-slate-400 text-xs mb-3">Outfit your pigeon as a seagull, parrot, or small drone. Perfect for covert operations in pigeon-suspicious neighborhoods.</p>
+        <div class="text-plum font-extrabold text-lg">+$15</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F382;</div>
+        <h3 class="font-bold mb-1">Birthday Bombdrop</h3>
+        <p class="text-slate-400 text-xs mb-3">A flock of 10 pigeons drops confetti and a tiny banner on your target. Optional cake-adjacent poop strike available.</p>
+        <div class="text-plum font-extrabold text-lg">+$39</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F4E2;</div>
+        <h3 class="font-bold mb-1">Skywriting Coo</h3>
+        <p class="text-slate-400 text-xs mb-3">A synchronized flock formation spells out your message in the sky. Up to 8 characters. All caps. Very dramatic.</p>
+        <div class="text-plum font-extrabold text-lg">+$99</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F315;</div>
+        <h3 class="font-bold mb-1">Night Ops Mode</h3>
+        <p class="text-slate-400 text-xs mb-3">Stealth-trained owls sub in after dark. Same services, zero visibility. Legally distinct from our pigeon division.</p>
+        <div class="text-plum font-extrabold text-lg">+$29</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F48E;</div>
+        <h3 class="font-bold mb-1">VIP Pigeon</h3>
+        <p class="text-slate-400 text-xs mb-3">An immaculately groomed bird with a tiny top hat and monocle. Impresses recipients. Intimidates rivals.</p>
+        <div class="text-plum font-extrabold text-lg">+$25</div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+        <div class="text-4xl mb-3" aria-hidden="true">&#x1F4A3;</div>
+        <h3 class="font-bold mb-1">Multi-Target Strike</h3>
+        <p class="text-slate-400 text-xs mb-3">Coordinate poop strikes on up to 3 targets in a single sortie. Bulk discount on humiliation. Volume is key.</p>
+        <div class="text-plum font-extrabold text-lg">+$59</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-20 px-8 bg-slate-50">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Pricing</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Affordable rates, premium feathers.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+      <!-- Carrier -->
+      <div class="border-2 border-slate-200 rounded-2xl p-10 text-center bg-white hover:-translate-y-1 hover:shadow-xl transition-all">
+        <h3 class="text-xl font-bold">Carrier</h3>
+        <div class="text-4xl font-extrabold my-3">$9<small class="text-sm font-medium text-slate-400">/message</small></div>
+        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Single message delivery</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Up to 50-word note</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">48-hour delivery window</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Basic flight tracking</li>
+        </ul>
+        <a href="#" class="inline-block px-8 py-3 rounded-full text-sm font-semibold border-2 border-plum text-plum hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Select</a>
+      </div>
+
+      <!-- Operative (featured) -->
+      <div class="border-2 border-plum rounded-2xl p-10 text-center bg-white relative hover:-translate-y-1 hover:shadow-xl transition-all">
+        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-plum text-white text-xs font-bold px-4 py-1 rounded-full">Most Popular</span>
+        <h3 class="text-xl font-bold">Operative</h3>
+        <div class="text-4xl font-extrabold my-3">$49<small class="text-sm font-medium text-slate-400">/day</small></div>
+        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Full-day surveillance</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Photo-grade memory bird</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Live coo-to-text updates</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Tactical pooping add-on</li>
+        </ul>
+        <a href="#" class="inline-block px-8 py-3 rounded-full text-sm font-semibold bg-plum text-white hover:bg-plum-dark hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Select</a>
+      </div>
+
+      <!-- Fleet -->
+      <div class="border-2 border-slate-200 rounded-2xl p-10 text-center bg-white hover:-translate-y-1 hover:shadow-xl transition-all">
+        <h3 class="text-xl font-bold">Fleet</h3>
+        <div class="text-4xl font-extrabold my-3">$199<small class="text-sm font-medium text-slate-400">/week</small></div>
+        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">5 pigeons at your disposal</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Unlimited messages</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Priority poop scheduling</li>
+          <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Dedicated pigeon handler</li>
+        </ul>
+        <a href="#" class="inline-block px-8 py-3 rounded-full text-sm font-semibold border-2 border-plum text-plum hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Select</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="py-20 px-8 bg-slate-50">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Happy Customers</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Don't take our word for it. Take theirs.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div class="bg-white rounded-2xl p-8">
+        <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="italic text-slate-500 mb-4">"I sent a love letter via pigeon and she said yes. The bird also pooped on her ex on the way out. 10/10 service."</p>
+        <div class="font-bold">- Marcus T., Berlin</div>
+      </div>
+      <div class="bg-white rounded-2xl p-8">
+        <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="italic text-slate-500 mb-4">"Used the surveillance package to find out who keeps stealing my newspaper. Turns out it was another pigeon. Rent-A-Pigeon handled the turf dispute professionally."</p>
+        <div class="font-bold">- Doris K., Manchester</div>
+      </div>
+      <div class="bg-white rounded-2xl p-8">
+        <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="italic text-slate-500 mb-4">"The tactical pooping tier is worth every penny. My HOA president now carries an umbrella everywhere. Mission accomplished."</p>
+        <div class="font-bold">- Jeff B., Austin</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section id="tips" class="py-20 px-8 bg-warm">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Pro Tips</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Get the most out of your feathered operative with these insider pointers.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F9ED;</span>
+        <div>
+          <h3 class="font-bold mb-1">Be Specific With Coordinates</h3>
+          <p class="text-slate-400 text-sm">Pigeons are smart, but "the guy with the red hat near the park" isn't an address. GPS coordinates or a full street address will dramatically improve delivery accuracy.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F327;&#xFE0F;</span>
+        <div>
+          <h3 class="font-bold mb-1">Check the Weather</h3>
+          <p class="text-slate-400 text-sm">Our birds fly in most conditions, but heavy storms can delay even the bravest pigeon. Book 48 hours ahead during rainy season for guaranteed on-time delivery.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x270D;&#xFE0F;</span>
+        <div>
+          <h3 class="font-bold mb-1">Keep Messages Short</h3>
+          <p class="text-slate-400 text-sm">Pigeons carry tiny scrolls, not novels. Aim for 50 words or fewer. If you need more space, upgrade to multi-pigeon relay — it's like pagination but with wings.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F363;</span>
+        <div>
+          <h3 class="font-bold mb-1">Tip Your Pigeon</h3>
+          <p class="text-slate-400 text-sm">A small handful of seeds or breadcrumbs on arrival goes a long way. Well-fed pigeons return for repeat missions with 34% more enthusiasm (source: us).</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F3AF;</span>
+        <div>
+          <h3 class="font-bold mb-1">Provide a Clear Photo for Poop Strikes</h3>
+          <p class="text-slate-400 text-sm">Our birds study their targets carefully. A recent, well-lit photo minimizes collateral damage and ensures the right person gets the message — from above.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F440;</span>
+        <div>
+          <h3 class="font-bold mb-1">Don't Blow the Pigeon's Cover</h3>
+          <p class="text-slate-400 text-sm">If you've booked a surveillance op, resist the urge to wave at the bird. Pigeons are professionals, but they can't do their job if you keep pointing at them and grinning.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F4C5;</span>
+        <div>
+          <h3 class="font-bold mb-1">Book Early for Holidays</h3>
+          <p class="text-slate-400 text-sm">Valentine's Day, April Fools, and the week after HOA meetings are our busiest periods. Reserve your pigeon at least a week in advance to avoid disappointment.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+        <span class="text-2xl shrink-0" aria-hidden="true">&#x1F91D;</span>
+        <div>
+          <h3 class="font-bold mb-1">Bundle for Savings</h3>
+          <p class="text-slate-400 text-sm">Pair a message delivery with a tactical poop strike and save 15%. We call it the "Sweet &amp; Sour" combo. Your target won't know what hit them — literally.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center py-20 px-8 bg-slate-800 text-white">
+    <h2 class="text-3xl font-extrabold mb-3">Ready to Deploy a Pigeon?</h2>
+    <p class="text-slate-400 max-w-md mx-auto mb-8">Join thousands of satisfied customers who chose feathers over fiber optics.</p>
+    <a href="#pricing" class="inline-block px-8 py-3 rounded-full text-base font-semibold bg-plum text-white hover:bg-plum-dark hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Get Started</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-8 text-sm text-slate-400 bg-slate-800 border-t border-slate-700">
+    &copy; 2026 Rent-A-Pigeon. All rights reserved. No pigeons were harmed in the making of this website.
+    <p class="mt-4 text-xs text-slate-500 max-w-lg mx-auto">Disclaimer: All Rent-A-Pigeon pigeons are 100% real birds. However, our pigeons may contain trace amounts of nuts. If you or your target have a nut allergy, please consult your physician before renting a pigeon. Rent-A-Pigeon is not affiliated with the CIA, the FBI, or Waffle House (officially).</p>
+  </footer>
+
+</body>
+</html>
