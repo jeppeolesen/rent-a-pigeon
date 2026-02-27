@@ -111,6 +111,64 @@
     </style>
   </section>
 
+  <!-- Stats -->
+  <section class="py-16 px-8 bg-slate-800 dark:bg-slate-950">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+      <div>
+        <div class="text-4xl font-extrabold text-white mb-1" data-count="14892">0</div>
+        <p class="text-sm text-slate-400">Missions Completed</p>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-white mb-1" data-count="347">0</div>
+        <p class="text-sm text-slate-400">Active Pigeons</p>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-white mb-1" data-count="98">0</div>
+        <p class="text-sm text-slate-400 flex items-center justify-center gap-1">Accuracy Rate <span class="text-white font-bold">%</span></p>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-white mb-1" data-count="63">0</div>
+        <p class="text-sm text-slate-400">Countries Served</p>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-white mb-1" data-count="7">0</div>
+        <p class="text-sm text-slate-400">Governments Toppled*</p>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var animated = false;
+        var counters = document.querySelectorAll('[data-count]');
+        function animateCounters() {
+          if (animated) return;
+          animated = true;
+          counters.forEach(function (el) {
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            var duration = 2000;
+            var start = 0;
+            var startTime = null;
+            function step(timestamp) {
+              if (!startTime) startTime = timestamp;
+              var progress = Math.min((timestamp - startTime) / duration, 1);
+              var eased = 1 - Math.pow(1 - progress, 3);
+              el.textContent = Math.floor(eased * target).toLocaleString();
+              if (progress < 1) requestAnimationFrame(step);
+              else el.textContent = target.toLocaleString();
+            }
+            requestAnimationFrame(step);
+          });
+        }
+        var observer = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) {
+            animateCounters();
+            observer.disconnect();
+          }
+        }, { threshold: 0.3 });
+        observer.observe(counters[0].closest('section'));
+      })();
+    </script>
+  </section>
+
   <!-- Services -->
   <section id="services" class="py-20 px-8 bg-white dark:bg-slate-800">
     <h2 class="text-3xl font-extrabold text-center mb-3">Our Services</h2>
