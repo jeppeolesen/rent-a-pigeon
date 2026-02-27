@@ -744,7 +744,45 @@
         <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">All pigeons return to their home roost for debriefing, a seed buffet, and a well-earned nap. They are never harmed, overworked, or asked to attend meetings. They live better lives than most of us.</div>
       </details>
 
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          What exactly is "government toppling consultation"?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Our Enterprise plan includes access to our senior strategic flock advisors, who have collectively participated in 7 regime changes across 4 continents. Services include coordinated mass leaflet drops, systematic morale disruption via targeted pooping campaigns on key officials, and round-the-clock aerial surveillance of government buildings. Results may vary. We accept no legal responsibility for geopolitical consequences. All consultations are conducted under strict NDA and, if necessary, via carrier pigeon.</div>
+      </details>
+
     </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="py-20 px-8 bg-white dark:bg-slate-900">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="text-5xl mb-4" aria-hidden="true">&#x1F4EC;</div>
+      <h2 class="text-3xl font-extrabold mb-3">The Coo Dispatch</h2>
+      <p class="text-slate-400 max-w-md mx-auto mb-2">Subscribe to our monthly newsletter — delivered directly to your window by carrier pigeon.</p>
+      <p class="text-xs text-slate-400 dark:text-slate-500 mb-8">Industry news, mission highlights, pigeon profiles, and exclusive coupons. Scroll included.</p>
+      <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+        <input type="text" placeholder="Your home address (we'll find you anyway)" class="flex-1 px-5 py-3 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:border-plum focus:ring-2 focus:ring-plum/20 transition-all">
+        <button type="submit" class="px-8 py-3 rounded-full text-sm font-semibold bg-plum text-white hover:bg-plum-dark hover:-translate-y-0.5 hover:shadow-lg transition-all shrink-0">Subscribe</button>
+      </form>
+      <div id="newsletter-confirmation" class="hidden mt-6">
+        <div class="inline-flex items-center gap-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full px-6 py-3">
+          <span class="text-2xl">&#x1F54A;&#xFE0F;</span>
+          <div class="text-left">
+            <p class="text-sm font-semibold">Pigeon dispatched!</p>
+            <p class="text-xs text-slate-400">Your first issue of The Coo Dispatch is on its way. Keep a window open.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('newsletter-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        this.classList.add('hidden');
+        document.getElementById('newsletter-confirmation').classList.remove('hidden');
+      });
+    </script>
   </section>
 
   <!-- CTA -->
