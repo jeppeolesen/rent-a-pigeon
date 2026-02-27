@@ -1144,7 +1144,9 @@
       var mouseX = window.innerWidth / 2;
       var mouseY = window.innerHeight / 2;
       var activePigeons = [];
+      var activeOwls = [];
       var escalationTimer = null;
+      var owlTimer = null;
       var waveStart = 0;
       var wallEl = null;
       var narrowingStart = 15; // seconds before walls start closing
@@ -1196,6 +1198,89 @@
         var elapsed = (performance.now() - waveStart) / 1000;
         if (elapsed < narrowingStart) return 0;
         return Math.floor((elapsed - narrowingStart) * narrowingRate);
+      }
+
+      function spawnOwl() {
+        var el = document.createElement('div');
+        el.textContent = '🦉';
+        var size = 28 + Math.floor(Math.random() * 20);
+        el.style.cssText = 'position:fixed;z-index:80;pointer-events:none;font-size:' + size + 'px;transition:opacity 0.4s;';
+
+        var inset = getWallInset();
+        var W = window.innerWidth;
+        var H = window.innerHeight;
+        var startX, startY, endX, endY;
+
+        // Pick a random edge to enter from, exit on opposite or adjacent edge
+        var side = Math.floor(Math.random() * 4);
+        if (side === 0) { // left
+          startX = inset - 40;
+          startY = inset + Math.random() * (H - inset * 2);
+          endX = W - inset + 40;
+          endY = inset + Math.random() * (H - inset * 2);
+        } else if (side === 1) { // right
+          startX = W - inset + 40;
+          startY = inset + Math.random() * (H - inset * 2);
+          endX = inset - 40;
+          endY = inset + Math.random() * (H - inset * 2);
+        } else if (side === 2) { // top
+          startX = inset + Math.random() * (W - inset * 2);
+          startY = inset - 40;
+          endX = inset + Math.random() * (W - inset * 2);
+          endY = H - inset + 40;
+        } else { // bottom
+          startX = inset + Math.random() * (W - inset * 2);
+          startY = H - inset + 40;
+          endX = inset + Math.random() * (W - inset * 2);
+          endY = inset - 40;
+        }
+
+        el.style.left = startX + 'px';
+        el.style.top = startY + 'px';
+        document.body.appendChild(el);
+        var owl = { el: el, alive: true };
+        activeOwls.push(owl);
+
+        var dx = endX - startX;
+        var dy = endY - startY;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var speed = 3 + Math.random() * 3;
+        var nx = dx / dist;
+        var ny = dy / dist;
+        var x = startX;
+        var y = startY;
+        var flipX = nx < 0 ? 'scaleX(1)' : 'scaleX(-1)';
+
+        function fly() {
+          if (!owl.alive) return;
+          x += nx * speed;
+          y += ny * speed;
+          el.style.left = x + 'px';
+          el.style.top = y + 'px';
+          el.style.transform = flipX;
+
+          // Check collision with cursor
+          var cdx = mouseX - x;
+          var cdy = mouseY - y;
+          if (Math.sqrt(cdx * cdx + cdy * cdy) < 22) {
+            owl.alive = false;
+            el.style.opacity = '0';
+            setTimeout(function () { el.remove(); }, 400);
+            endWave();
+            return;
+          }
+
+          // Remove once off screen
+          if (x < -60 || x > W + 60 || y < -60 || y > H + 60) {
+            owl.alive = false;
+            el.remove();
+            return;
+          }
+
+          requestAnimationFrame(fly);
+        }
+
+        requestAnimationFrame(fly);
       }
 
       function createWalls() {
@@ -1321,6 +1406,10 @@
           clearInterval(escalationTimer);
           escalationTimer = null;
         }
+        if (owlTimer) {
+          clearInterval(owlTimer);
+          owlTimer = null;
+        }
         activePigeons.forEach(function (p) {
           if (p.alive) {
             p.alive = false;
@@ -1329,7 +1418,16 @@
             setTimeout(function () { p.el.remove(); }, 600);
           }
         });
+        activeOwls.forEach(function (o) {
+          if (o.alive) {
+            o.alive = false;
+            o.el.style.opacity = '0';
+            o.el.style.transition = 'opacity 0.4s';
+            setTimeout(function () { o.el.remove(); }, 400);
+          }
+        });
         activePigeons = [];
+        activeOwls = [];
         stopTimer();
         resetWalls();
         startWave();
@@ -1342,6 +1440,9 @@
           escalationTimer = setInterval(function () {
             spawnChaser();
           }, 8000);
+          owlTimer = setInterval(function () {
+            spawnOwl();
+          }, 3000 + Math.random() * 4000);
         }, 15000 + Math.random() * 15000);
       }
 
@@ -1352,6 +1453,9 @@
         escalationTimer = setInterval(function () {
           spawnChaser();
         }, 8000);
+        owlTimer = setInterval(function () {
+          spawnOwl();
+        }, 3000 + Math.random() * 4000);
       }, 10000 + Math.random() * 10000);
     })();
   </script>
