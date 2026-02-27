@@ -66,11 +66,70 @@
         <a href="#services" class="hidden sm:inline-block px-8 py-3 rounded-full text-base font-semibold border-2 border-plum text-plum hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Learn More</a>
       </div>
       <div class="mt-10">
-        <p class="text-sm text-slate-400 mb-3">&#x1F3B5; Listen to our promotional jingle</p>
-        <audio controls class="mx-auto">
+        <div id="jingle-player" class="inline-flex items-center gap-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 rounded-full px-6 py-3 shadow-sm">
+          <button id="jingle-btn" class="w-10 h-10 rounded-full bg-plum text-white flex items-center justify-center hover:bg-plum-dark transition-colors shrink-0" aria-label="Play jingle">
+            <svg id="jingle-play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><polygon points="5,3 18,10 5,17"/></svg>
+            <svg id="jingle-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><rect x="4" y="3" width="4" height="14"/><rect x="12" y="3" width="4" height="14"/></svg>
+          </button>
+          <div class="flex flex-col gap-1 min-w-[180px] sm:min-w-[240px]">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span>&#x1F3B5; Promotional Jingle</span>
+              <span id="jingle-time">0:00 / 0:00</span>
+            </div>
+            <div id="jingle-track" class="relative w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-full cursor-pointer">
+              <div id="jingle-progress" class="absolute left-0 top-0 h-2 bg-plum rounded-full transition-[width] duration-100"></div>
+            </div>
+          </div>
+        </div>
+        <audio id="jingle-audio">
           <source src="jingle.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
         </audio>
+        <script>
+          (function () {
+            var audio = document.getElementById('jingle-audio');
+            var btn = document.getElementById('jingle-btn');
+            var playIcon = document.getElementById('jingle-play-icon');
+            var pauseIcon = document.getElementById('jingle-pause-icon');
+            var progress = document.getElementById('jingle-progress');
+            var track = document.getElementById('jingle-track');
+            var timeEl = document.getElementById('jingle-time');
+
+            function fmt(s) {
+              var m = Math.floor(s / 60);
+              var sec = Math.floor(s % 60);
+              return m + ':' + (sec < 10 ? '0' : '') + sec;
+            }
+
+            btn.addEventListener('click', function () {
+              if (audio.paused) { audio.play(); } else { audio.pause(); }
+            });
+
+            audio.addEventListener('play', function () {
+              playIcon.classList.add('hidden');
+              pauseIcon.classList.remove('hidden');
+            });
+            audio.addEventListener('pause', function () {
+              pauseIcon.classList.add('hidden');
+              playIcon.classList.remove('hidden');
+            });
+
+            audio.addEventListener('timeupdate', function () {
+              var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+              progress.style.width = pct + '%';
+              timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration || 0);
+            });
+
+            audio.addEventListener('ended', function () {
+              progress.style.width = '0%';
+            });
+
+            track.addEventListener('click', function (e) {
+              if (!audio.duration) return;
+              var rect = track.getBoundingClientRect();
+              audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+            });
+          })();
+        </script>
       </div>
     </div>
   </section>
