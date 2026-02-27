@@ -8,41 +8,57 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             plum: { DEFAULT: '#7c3aed', dark: '#6d28d9' },
             warm: '#f5f0eb',
+            'warm-dark': '#1a1520',
           }
         }
       }
     }
   </script>
+  <script>
+    (function () {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 </head>
-<body class="text-slate-800 bg-slate-50">
+<body class="text-slate-800 bg-slate-50 dark:text-slate-200 dark:bg-slate-900 transition-colors">
 
   <!-- Nav -->
-  <nav class="fixed top-0 w-full bg-white/85 backdrop-blur-md border-b border-slate-200 z-50 px-8">
+  <nav class="fixed top-0 w-full bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 z-50 px-8">
     <div class="max-w-5xl mx-auto flex items-center justify-between h-16">
-      <a href="#" class="font-extrabold text-xl text-slate-800 no-underline">Rent-A-Pigeon</a>
-      <ul class="hidden sm:flex gap-8 list-none">
-        <li><a href="#services" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Services</a></li>
-        <li><a href="#how" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">How It Works</a></li>
-        <li><a href="#addons" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Add-Ons</a></li>
-        <li><a href="#pricing" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Pricing</a></li>
-        <li><a href="#testimonials" class="text-sm font-medium text-slate-800 no-underline hover:text-plum transition-colors">Testimonials</a></li>
-      </ul>
+      <a href="#" class="font-extrabold text-xl text-slate-800 dark:text-white no-underline">Rent-A-Pigeon</a>
+      <div class="flex items-center gap-6">
+        <ul class="hidden sm:flex gap-8 list-none">
+          <li><a href="#services" class="text-sm font-medium text-slate-800 dark:text-slate-200 no-underline hover:text-plum transition-colors">Services</a></li>
+          <li><a href="#how" class="text-sm font-medium text-slate-800 dark:text-slate-200 no-underline hover:text-plum transition-colors">How It Works</a></li>
+          <li><a href="#addons" class="text-sm font-medium text-slate-800 dark:text-slate-200 no-underline hover:text-plum transition-colors">Add-Ons</a></li>
+          <li><a href="#pricing" class="text-sm font-medium text-slate-800 dark:text-slate-200 no-underline hover:text-plum transition-colors">Pricing</a></li>
+          <li><a href="#testimonials" class="text-sm font-medium text-slate-800 dark:text-slate-200 no-underline hover:text-plum transition-colors">Testimonials</a></li>
+        </ul>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+          <span id="icon-sun" class="hidden dark:inline text-lg">&#9728;&#xFE0F;</span>
+          <span id="icon-moon" class="inline dark:hidden text-lg">&#x1F319;</span>
+        </button>
+      </div>
     </div>
   </nav>
 
   <!-- Hero -->
-  <section class="min-h-screen flex items-center justify-center text-center px-8 pt-24 pb-16 bg-gradient-to-b from-warm to-slate-50">
+  <section class="min-h-screen flex items-center justify-center text-center px-8 pt-24 pb-16 bg-gradient-to-b from-warm to-slate-50 dark:from-warm-dark dark:to-slate-900">
     <div class="max-w-2xl">
       <div class="text-7xl mb-6" aria-hidden="true">&#x1F54A;&#xFE0F;</div>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-5">
         Your message.<br><span class="text-plum">Their problem.</span>
       </h1>
-      <p class="text-lg text-slate-500 max-w-xl mx-auto mb-10">
+      <p class="text-lg text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-10">
         Rent a professionally trained pigeon for message delivery, aerial reconnaissance, or precision poop strikes. Available worldwide, feathers guaranteed.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
@@ -60,31 +76,31 @@
   </section>
 
   <!-- Trusted By -->
-  <section class="py-12 px-8 bg-white border-b border-slate-100">
-    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-300 mb-8">Trusted by forward-thinking organizations</p>
+  <section class="py-12 px-8 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-300 dark:text-slate-500 mb-8">Trusted by forward-thinking organizations</p>
     <div class="relative max-w-5xl mx-auto overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
       <div class="flex gap-16 items-center animate-[scroll_30s_linear_infinite] w-max">
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">NASA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">WikiLeaks</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">IKEA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">MI6</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Domino's Pizza</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">The Vatican</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Tesla</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Hogwarts</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">FIFA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">NASA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">WikiLeaks</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">IKEA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">MI6</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Domino's Pizza</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">The Vatican</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Tesla</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Hogwarts</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">FIFA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
         <!-- duplicate set for seamless loop -->
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">NASA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">WikiLeaks</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">IKEA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">MI6</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Domino's Pizza</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">The Vatican</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Tesla</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Hogwarts</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">FIFA</span>
-        <span class="text-2xl font-extrabold text-slate-300 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">NASA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">WikiLeaks</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">IKEA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">MI6</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Domino's Pizza</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">The Vatican</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Tesla</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Hogwarts</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">FIFA</span>
+        <span class="text-2xl font-extrabold text-slate-300 dark:text-slate-600 whitespace-nowrap tracking-tight">Wayne Enterprises</span>
       </div>
     </div>
     <style>
@@ -96,21 +112,21 @@
   </section>
 
   <!-- Services -->
-  <section id="services" class="py-20 px-8 bg-white">
+  <section id="services" class="py-20 px-8 bg-white dark:bg-slate-800">
     <h2 class="text-3xl font-extrabold text-center mb-3">Our Services</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Three distinct pigeon packages, each backed by our ironclad Coo Guarantee.</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-4" aria-hidden="true">&#x1F4E8;</div>
         <h3 class="text-xl font-bold mb-2">Message Delivery</h3>
         <p class="text-slate-400 text-sm">Old-school charm meets modern reliability. Our pigeons navigate by magnetoreception and sheer willpower, delivering your handwritten notes rain or shine.</p>
       </div>
-      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-4" aria-hidden="true">&#x1F575;&#xFE0F;</div>
         <h3 class="text-xl font-bold mb-2">Surveillance Ops</h3>
         <p class="text-slate-400 text-sm">Nobody suspects the pigeon. Our elite recon birds blend into any urban environment, gathering intelligence while looking adorably clueless.</p>
       </div>
-      <div class="bg-slate-50 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-slate-50 dark:bg-slate-700 rounded-2xl p-10 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-4" aria-hidden="true">&#x1F4A9;</div>
         <h3 class="text-xl font-bold mb-2">Tactical Pooping</h3>
         <p class="text-slate-400 text-sm">Sometimes words aren't enough. Our precision-trained pigeons deliver payloads with pinpoint accuracy to the target of your choosing. No questions asked.</p>
@@ -119,67 +135,67 @@
   </section>
 
   <!-- Top Pigeons -->
-  <section id="pigeons" class="py-20 px-8 bg-slate-50">
+  <section id="pigeons" class="py-20 px-8 bg-slate-50 dark:bg-slate-900">
     <h2 class="text-3xl font-extrabold text-center mb-3">Meet Our Top Performers</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Hand-picked from a flock of thousands. These are the best in the business.</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
 
       <!-- Pigeon 1 -->
-      <div class="bg-white rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-3" aria-hidden="true">&#x1F426;</div>
         <h3 class="font-bold text-lg">"Big Tony"</h3>
         <p class="text-xs text-plum font-semibold mb-3">Tactical Pooping Specialist</p>
         <div class="space-y-2 text-sm">
-          <div class="flex justify-between text-slate-500"><span>Accuracy</span><span class="font-bold text-slate-700">98.7%</span></div>
-          <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:98.7%"></div></div>
-          <div class="flex justify-between text-slate-500"><span>Missions</span><span class="font-bold text-slate-700">2,419</span></div>
-          <div class="flex justify-between text-slate-500"><span>Top Speed</span><span class="font-bold text-slate-700">92 km/h</span></div>
-          <div class="flex justify-between text-slate-500"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Accuracy</span><span class="font-bold text-slate-700 dark:text-slate-200">98.7%</span></div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:98.7%"></div></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Missions</span><span class="font-bold text-slate-700 dark:text-slate-200">2,419</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Top Speed</span><span class="font-bold text-slate-700 dark:text-slate-200">92 km/h</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
         </div>
         <p class="text-xs text-slate-400 mt-3 italic">"If Tony's flying overhead, it's already too late."</p>
       </div>
 
       <!-- Pigeon 2 -->
-      <div class="bg-white rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-3" aria-hidden="true">&#x1F54A;&#xFE0F;</div>
         <h3 class="font-bold text-lg">"Madame Fleur"</h3>
         <p class="text-xs text-plum font-semibold mb-3">Love Letter Courier</p>
         <div class="space-y-2 text-sm">
-          <div class="flex justify-between text-slate-500"><span>Delivery Rate</span><span class="font-bold text-slate-700">99.9%</span></div>
-          <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:99.9%"></div></div>
-          <div class="flex justify-between text-slate-500"><span>Missions</span><span class="font-bold text-slate-700">3,841</span></div>
-          <div class="flex justify-between text-slate-500"><span>Proposals Caused</span><span class="font-bold text-slate-700">187</span></div>
-          <div class="flex justify-between text-slate-500"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Delivery Rate</span><span class="font-bold text-slate-700 dark:text-slate-200">99.9%</span></div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:99.9%"></div></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Missions</span><span class="font-bold text-slate-700 dark:text-slate-200">3,841</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Proposals Caused</span><span class="font-bold text-slate-700 dark:text-slate-200">187</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
         </div>
         <p class="text-xs text-slate-400 mt-3 italic">"She arrives with rose petals. Nobody knows where she gets them."</p>
       </div>
 
       <!-- Pigeon 3 -->
-      <div class="bg-white rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-3" aria-hidden="true">&#x1F575;&#xFE0F;</div>
         <h3 class="font-bold text-lg">"Ghostie"</h3>
         <p class="text-xs text-plum font-semibold mb-3">Surveillance Operative</p>
         <div class="space-y-2 text-sm">
-          <div class="flex justify-between text-slate-500"><span>Stealth Score</span><span class="font-bold text-slate-700">99.2%</span></div>
-          <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:99.2%"></div></div>
-          <div class="flex justify-between text-slate-500"><span>Missions</span><span class="font-bold text-slate-700">1,207</span></div>
-          <div class="flex justify-between text-slate-500"><span>Times Detected</span><span class="font-bold text-slate-700">3</span></div>
-          <div class="flex justify-between text-slate-500"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Stealth Score</span><span class="font-bold text-slate-700 dark:text-slate-200">99.2%</span></div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:99.2%"></div></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Missions</span><span class="font-bold text-slate-700 dark:text-slate-200">1,207</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Times Detected</span><span class="font-bold text-slate-700 dark:text-slate-200">3</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
         </div>
         <p class="text-xs text-slate-400 mt-3 italic">"You won't see Ghostie. That's the point."</p>
       </div>
 
       <!-- Pigeon 4 -->
-      <div class="bg-white rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl transition-all">
         <div class="text-5xl mb-3" aria-hidden="true">&#x1F3C6;</div>
         <h3 class="font-bold text-lg">"Turbo Dave"</h3>
         <p class="text-xs text-plum font-semibold mb-3">Speed Record Holder</p>
         <div class="space-y-2 text-sm">
-          <div class="flex justify-between text-slate-500"><span>Avg Speed</span><span class="font-bold text-slate-700">108 km/h</span></div>
-          <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:100%"></div></div>
-          <div class="flex justify-between text-slate-500"><span>Missions</span><span class="font-bold text-slate-700">1,853</span></div>
-          <div class="flex justify-between text-slate-500"><span class="shrink-0">Fastest</span><span class="font-bold text-slate-700 text-right">11 min / 40 km</span></div>
-          <div class="flex justify-between text-slate-500"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Avg Speed</span><span class="font-bold text-slate-700 dark:text-slate-200">108 km/h</span></div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-plum rounded-full h-2" style="width:100%"></div></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Missions</span><span class="font-bold text-slate-700 dark:text-slate-200">1,853</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span class="shrink-0">Fastest</span><span class="font-bold text-slate-700 dark:text-slate-200 text-right">11 min / 40 km</span></div>
+          <div class="flex justify-between text-slate-500 dark:text-slate-400"><span>Rating</span><span class="font-bold text-amber-400">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
         </div>
         <p class="text-xs text-slate-400 mt-3 italic">"Dave doesn't fly. Dave teleports with extra steps."</p>
       </div>
@@ -188,7 +204,7 @@
   </section>
 
   <!-- How It Works -->
-  <section id="how" class="py-20 px-8 bg-warm">
+  <section id="how" class="py-20 px-8 bg-warm dark:bg-slate-800">
     <h2 class="text-3xl font-extrabold text-center mb-3">How It Works</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">From booking to bombing run, we keep it simple.</p>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
@@ -211,61 +227,61 @@
   </section>
 
   <!-- Add-Ons -->
-  <section id="addons" class="py-20 px-8 bg-white">
+  <section id="addons" class="py-20 px-8 bg-white dark:bg-slate-900">
     <h2 class="text-3xl font-extrabold text-center mb-3">Add-On Services</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Supercharge any package with these premium extras.</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F48C;</div>
         <h3 class="font-bold mb-1">Love Letter Express</h3>
         <p class="text-slate-400 text-xs mb-3">Rose-petal-scented delivery with a dramatic cooing entrance. Includes one complimentary wing-flutter serenade.</p>
         <div class="text-plum font-extrabold text-lg">+$12</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F4F8;</div>
         <h3 class="font-bold mb-1">Photo Evidence</h3>
         <p class="text-slate-400 text-xs mb-3">Our birds wear micro-cams and capture high-res proof of delivery, surveillance, or impact. Sent to your inbox within the hour.</p>
         <div class="text-plum font-extrabold text-lg">+$19</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F3AD;</div>
         <h3 class="font-bold mb-1">Disguise Kit</h3>
         <p class="text-slate-400 text-xs mb-3">Outfit your pigeon as a seagull, parrot, or small drone. Perfect for covert operations in pigeon-suspicious neighborhoods.</p>
         <div class="text-plum font-extrabold text-lg">+$15</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F382;</div>
         <h3 class="font-bold mb-1">Birthday Bombdrop</h3>
         <p class="text-slate-400 text-xs mb-3">A flock of 10 pigeons drops confetti and a tiny banner on your target. Optional cake-adjacent poop strike available.</p>
         <div class="text-plum font-extrabold text-lg">+$39</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F4E2;</div>
         <h3 class="font-bold mb-1">Skywriting Coo</h3>
         <p class="text-slate-400 text-xs mb-3">A synchronized flock formation spells out your message in the sky. Up to 8 characters. All caps. Very dramatic.</p>
         <div class="text-plum font-extrabold text-lg">+$99</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F315;</div>
         <h3 class="font-bold mb-1">Night Ops Mode</h3>
         <p class="text-slate-400 text-xs mb-3">Stealth-trained owls sub in after dark. Same services, zero visibility. Legally distinct from our pigeon division.</p>
         <div class="text-plum font-extrabold text-lg">+$29</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F48E;</div>
         <h3 class="font-bold mb-1">VIP Pigeon</h3>
         <p class="text-slate-400 text-xs mb-3">An immaculately groomed bird with a tiny top hat and monocle. Impresses recipients. Intimidates rivals.</p>
         <div class="text-plum font-extrabold text-lg">+$25</div>
       </div>
 
-      <div class="border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-lg transition-all">
         <div class="text-4xl mb-3" aria-hidden="true">&#x1F4A3;</div>
         <h3 class="font-bold mb-1">Multi-Target Strike</h3>
         <p class="text-slate-400 text-xs mb-3">Coordinate poop strikes on up to 3 targets in a single sortie. Bulk discount on humiliation. Volume is key.</p>
@@ -276,16 +292,16 @@
   </section>
 
   <!-- Pricing -->
-  <section id="pricing" class="py-20 px-8 bg-slate-50">
+  <section id="pricing" class="py-20 px-8 bg-slate-50 dark:bg-slate-800">
     <h2 class="text-3xl font-extrabold text-center mb-3">Pricing</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Affordable rates, premium feathers.</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
 
       <!-- Carrier -->
-      <div class="border-2 border-slate-200 rounded-2xl p-10 text-center bg-white hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-10 text-center bg-white dark:bg-slate-900 hover:-translate-y-1 hover:shadow-xl transition-all">
         <h3 class="text-xl font-bold">Carrier</h3>
         <div class="text-4xl font-extrabold my-3">$9<small class="text-sm font-medium text-slate-400">/message</small></div>
-        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+        <ul class="text-left text-sm text-slate-500 dark:text-slate-400 space-y-2 my-6">
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Single message delivery</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Up to 50-word note</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">48-hour delivery window</li>
@@ -295,11 +311,11 @@
       </div>
 
       <!-- Operative (featured) -->
-      <div class="border-2 border-plum rounded-2xl p-10 text-center bg-white relative hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="border-2 border-plum rounded-2xl p-10 text-center bg-white dark:bg-slate-900 relative hover:-translate-y-1 hover:shadow-xl transition-all">
         <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-plum text-white text-xs font-bold px-4 py-1 rounded-full">Most Popular</span>
         <h3 class="text-xl font-bold">Operative</h3>
         <div class="text-4xl font-extrabold my-3">$49<small class="text-sm font-medium text-slate-400">/day</small></div>
-        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+        <ul class="text-left text-sm text-slate-500 dark:text-slate-400 space-y-2 my-6">
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Full-day surveillance</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Photo-grade memory bird</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Live coo-to-text updates</li>
@@ -309,10 +325,10 @@
       </div>
 
       <!-- Fleet -->
-      <div class="border-2 border-slate-200 rounded-2xl p-10 text-center bg-white hover:-translate-y-1 hover:shadow-xl transition-all">
+      <div class="border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-10 text-center bg-white dark:bg-slate-900 hover:-translate-y-1 hover:shadow-xl transition-all">
         <h3 class="text-xl font-bold">Fleet</h3>
         <div class="text-4xl font-extrabold my-3">$199<small class="text-sm font-medium text-slate-400">/week</small></div>
-        <ul class="text-left text-sm text-slate-500 space-y-2 my-6">
+        <ul class="text-left text-sm text-slate-500 dark:text-slate-400 space-y-2 my-6">
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">5 pigeons at your disposal</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Unlimited messages</li>
           <li class="pl-6 relative before:content-['✓'] before:absolute before:left-0 before:text-plum before:font-bold">Priority poop scheduling</li>
@@ -325,35 +341,35 @@
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="py-20 px-8 bg-slate-50">
+  <section id="testimonials" class="py-20 px-8 bg-slate-50 dark:bg-slate-900">
     <h2 class="text-3xl font-extrabold text-center mb-3">Happy Customers</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Don't take our word for it. Take theirs.</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      <div class="bg-white rounded-2xl p-8">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-8">
         <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="italic text-slate-500 mb-4">"I sent a love letter via pigeon and she said yes. The bird also pooped on her ex on the way out. 10/10 service."</p>
+        <p class="italic text-slate-500 dark:text-slate-400 mb-4">"I sent a love letter via pigeon and she said yes. The bird also pooped on her ex on the way out. 10/10 service."</p>
         <div class="font-bold">- Marcus T., Berlin</div>
       </div>
-      <div class="bg-white rounded-2xl p-8">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-8">
         <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="italic text-slate-500 mb-4">"Used the surveillance package to find out who keeps stealing my newspaper. Turns out it was another pigeon. Rent-A-Pigeon handled the turf dispute professionally."</p>
+        <p class="italic text-slate-500 dark:text-slate-400 mb-4">"Used the surveillance package to find out who keeps stealing my newspaper. Turns out it was another pigeon. Rent-A-Pigeon handled the turf dispute professionally."</p>
         <div class="font-bold">- Doris K., Manchester</div>
       </div>
-      <div class="bg-white rounded-2xl p-8">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-8">
         <div class="text-amber-400 mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="italic text-slate-500 mb-4">"The tactical pooping tier is worth every penny. My HOA president now carries an umbrella everywhere. Mission accomplished."</p>
+        <p class="italic text-slate-500 dark:text-slate-400 mb-4">"The tactical pooping tier is worth every penny. My HOA president now carries an umbrella everywhere. Mission accomplished."</p>
         <div class="font-bold">- Jeff B., Austin</div>
       </div>
     </div>
   </section>
 
   <!-- Tips -->
-  <section id="tips" class="py-20 px-8 bg-warm">
+  <section id="tips" class="py-20 px-8 bg-warm dark:bg-slate-800">
     <h2 class="text-3xl font-extrabold text-center mb-3">Pro Tips</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Get the most out of your feathered operative with these insider pointers.</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F9ED;</span>
         <div>
           <h3 class="font-bold mb-1">Be Specific With Coordinates</h3>
@@ -361,7 +377,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F327;&#xFE0F;</span>
         <div>
           <h3 class="font-bold mb-1">Check the Weather</h3>
@@ -369,7 +385,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x270D;&#xFE0F;</span>
         <div>
           <h3 class="font-bold mb-1">Keep Messages Short</h3>
@@ -377,7 +393,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F363;</span>
         <div>
           <h3 class="font-bold mb-1">Tip Your Pigeon</h3>
@@ -385,7 +401,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F3AF;</span>
         <div>
           <h3 class="font-bold mb-1">Provide a Clear Photo for Poop Strikes</h3>
@@ -393,7 +409,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F440;</span>
         <div>
           <h3 class="font-bold mb-1">Don't Blow the Pigeon's Cover</h3>
@@ -401,7 +417,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F4C5;</span>
         <div>
           <h3 class="font-bold mb-1">Book Early for Holidays</h3>
@@ -409,7 +425,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 flex gap-4 items-start">
+      <div class="bg-white dark:bg-slate-700 rounded-2xl p-6 flex gap-4 items-start">
         <span class="text-2xl shrink-0" aria-hidden="true">&#x1F91D;</span>
         <div>
           <h3 class="font-bold mb-1">Bundle for Savings</h3>
@@ -421,17 +437,25 @@
   </section>
 
   <!-- CTA -->
-  <section class="text-center py-20 px-8 bg-slate-800 text-white">
+  <section class="text-center py-20 px-8 bg-slate-800 dark:bg-slate-950 text-white">
     <h2 class="text-3xl font-extrabold mb-3">Ready to Deploy a Pigeon?</h2>
     <p class="text-slate-400 max-w-md mx-auto mb-8">Join thousands of satisfied customers who chose feathers over fiber optics.</p>
     <a href="#pricing" class="inline-block px-8 py-3 rounded-full text-base font-semibold bg-plum text-white hover:bg-plum-dark hover:-translate-y-0.5 hover:shadow-lg transition-all no-underline">Get Started</a>
   </section>
 
   <!-- Footer -->
-  <footer class="text-center py-8 text-sm text-slate-400 bg-slate-800 border-t border-slate-700">
+  <footer class="text-center py-8 text-sm text-slate-400 bg-slate-800 dark:bg-slate-950 border-t border-slate-700">
     &copy; 2026 Rent-A-Pigeon. All rights reserved. No pigeons were harmed in the making of this website.
     <p class="mt-4 text-xs text-slate-500 max-w-lg mx-auto">Disclaimer: All Rent-A-Pigeon pigeons are 100% real birds. However, our pigeons may contain trace amounts of nuts. If you or your target have a nut allergy, please consult your physician before renting a pigeon. Rent-A-Pigeon is not affiliated with the CIA, the FBI, or Waffle House (officially).</p>
   </footer>
+
+  <script>
+    var toggle = document.getElementById('theme-toggle');
+    toggle.addEventListener('click', function () {
+      var isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
 
 </body>
 </html>
