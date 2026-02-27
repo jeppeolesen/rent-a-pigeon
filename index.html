@@ -1146,6 +1146,9 @@
       var activePigeons = [];
       var escalationTimer = null;
       var waveStart = 0;
+      var wallEl = null;
+      var narrowingStart = 15; // seconds before walls start closing
+      var narrowingRate = 3; // pixels per second per side
       var bestTime = parseFloat(localStorage.getItem('pigeon-best') || '0');
       var timerEl = null;
 
@@ -1178,6 +1181,7 @@
         var elapsed = (performance.now() - waveStart) / 1000;
         var el = document.getElementById('evade-time');
         if (el) el.textContent = elapsed.toFixed(1) + 's';
+        updateWalls();
         requestAnimationFrame(tickTimer);
       }
 
@@ -1185,6 +1189,43 @@
         if (!waveStart) return 1.5;
         var elapsed = (performance.now() - waveStart) / 1000;
         return 1.5 + elapsed * 0.15;
+      }
+
+      function getWallInset() {
+        if (!waveStart) return 0;
+        var elapsed = (performance.now() - waveStart) / 1000;
+        if (elapsed < narrowingStart) return 0;
+        return Math.floor((elapsed - narrowingStart) * narrowingRate);
+      }
+
+      function createWalls() {
+        if (wallEl) return;
+        wallEl = document.createElement('div');
+        wallEl.style.cssText = 'position:fixed;inset:0;z-index:79;pointer-events:none;transition:opacity 0.5s;';
+        wallEl.innerHTML =
+          '<div id="wall-top" style="position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(to bottom,rgba(220,38,38,.4),transparent);backdrop-filter:blur(2px);transition:height 0.3s;"></div>' +
+          '<div id="wall-bottom" style="position:absolute;bottom:0;left:0;right:0;height:0;background:linear-gradient(to top,rgba(220,38,38,.4),transparent);backdrop-filter:blur(2px);transition:height 0.3s;"></div>' +
+          '<div id="wall-left" style="position:absolute;top:0;bottom:0;left:0;width:0;background:linear-gradient(to right,rgba(220,38,38,.4),transparent);backdrop-filter:blur(2px);transition:width 0.3s;"></div>' +
+          '<div id="wall-right" style="position:absolute;top:0;bottom:0;right:0;width:0;background:linear-gradient(to left,rgba(220,38,38,.4),transparent);backdrop-filter:blur(2px);transition:width 0.3s;"></div>';
+        document.body.appendChild(wallEl);
+      }
+
+      function updateWalls() {
+        var inset = getWallInset();
+        if (inset <= 0) return;
+        if (!wallEl) createWalls();
+        document.getElementById('wall-top').style.height = inset + 'px';
+        document.getElementById('wall-bottom').style.height = inset + 'px';
+        document.getElementById('wall-left').style.width = inset + 'px';
+        document.getElementById('wall-right').style.width = inset + 'px';
+      }
+
+      function resetWalls() {
+        if (!wallEl) return;
+        wallEl.style.opacity = '0';
+        setTimeout(function () {
+          if (wallEl) { wallEl.remove(); wallEl = null; }
+        }, 500);
       }
 
       function stopTimer() {
@@ -1202,6 +1243,12 @@
       document.addEventListener('mousemove', function (e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
+        var inset = getWallInset();
+        if (inset > 0 && activePigeons.length > 0 &&
+          (mouseX < inset || mouseX > window.innerWidth - inset ||
+           mouseY < inset || mouseY > window.innerHeight - inset)) {
+          endWave();
+        }
       });
 
       function spawnChaser() {
@@ -1231,6 +1278,14 @@
           var dx = mouseX - x;
           var dy = mouseY - y;
           var dist = Math.sqrt(dx * dx + dy * dy);
+
+          // Clamp pigeon target within walls
+          var inset = getWallInset();
+          var targetX = Math.max(inset, Math.min(window.innerWidth - inset, mouseX));
+          var targetY = Math.max(inset, Math.min(window.innerHeight - inset, mouseY));
+          dx = targetX - x;
+          dy = targetY - y;
+          dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 20) {
             pigeon.alive = false;
@@ -1276,6 +1331,7 @@
         });
         activePigeons = [];
         stopTimer();
+        resetWalls();
         startWave();
       }
 
