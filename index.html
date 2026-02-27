@@ -1206,7 +1206,7 @@
 
       function createTimer() {
         timerEl = document.createElement('div');
-        timerEl.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:80;pointer-events:none;font-family:system-ui;transition:opacity 0.5s;';
+        timerEl.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:82;pointer-events:none;font-family:system-ui;transition:opacity 0.5s;';
         timerEl.innerHTML = '<div style="background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;padding:10px 20px;border-radius:16px;font-size:15px;display:inline-flex;align-items:center;gap:10px;">' +
           '<span style="font-size:1.3em;">&#x1F54A;&#xFE0F;</span>' +
           '<span id="evade-time" style="font-weight:800;font-size:1.2em;font-variant-numeric:tabular-nums;min-width:50px;">0.0s</span>' +
@@ -1288,7 +1288,7 @@
         if (fogEl) return;
         fogEl = document.createElement('div');
         fogEl.id = 'pigeon-fog';
-        fogEl.style.cssText = 'position:fixed;inset:0;z-index:78;pointer-events:none;transition:opacity 2s;opacity:0;';
+        fogEl.style.cssText = 'position:fixed;inset:0;z-index:81;pointer-events:none;transition:opacity 2s;opacity:0;';
         fogEl.innerHTML = '<div style="position:absolute;inset:0;background:radial-gradient(circle 300px at var(--fx,50%) var(--fy,50%),transparent 0%,rgba(0,0,0,.0) 40%,rgba(0,0,0,.85) 100%);"></div>';
         document.body.appendChild(fogEl);
         setTimeout(function () { if (fogEl) fogEl.style.opacity = '1'; }, 50);
@@ -1891,7 +1891,7 @@
         if (playBtn) return;
         playBtn = document.createElement('button');
         playBtn.innerHTML = '🕊️ Evade the Flock';
-        playBtn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:80;background:#7c3aed;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-weight:800;font-size:15px;cursor:pointer;font-family:system-ui;box-shadow:0 4px 20px rgba(124,58,237,.4);transition:transform 0.2s,opacity 0.3s;opacity:0;';
+        playBtn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:82;background:#7c3aed;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-weight:800;font-size:15px;cursor:pointer;font-family:system-ui;box-shadow:0 4px 20px rgba(124,58,237,.4);transition:transform 0.2s,opacity 0.3s;opacity:0;';
         playBtn.onmouseenter = function () { playBtn.style.transform = 'scale(1.05)'; };
         playBtn.onmouseleave = function () { playBtn.style.transform = 'scale(1)'; };
         playBtn.onclick = function () {
