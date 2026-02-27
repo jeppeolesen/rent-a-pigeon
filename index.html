@@ -1137,6 +1137,169 @@
       }
     })();
   </script>
+
+  <!-- Chasing Pigeons -->
+  <script>
+    (function () {
+      var mouseX = window.innerWidth / 2;
+      var mouseY = window.innerHeight / 2;
+      var activePigeons = [];
+      var escalationTimer = null;
+      var waveStart = 0;
+      var bestTime = parseFloat(localStorage.getItem('pigeon-best') || '0');
+      var timerEl = null;
+
+      function createTimer() {
+        timerEl = document.createElement('div');
+        timerEl.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:80;pointer-events:none;font-family:system-ui;transition:opacity 0.5s;';
+        timerEl.innerHTML = '<div style="background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;padding:10px 20px;border-radius:16px;font-size:15px;display:inline-flex;align-items:center;gap:10px;">' +
+          '<span style="font-size:1.3em;">&#x1F54A;&#xFE0F;</span>' +
+          '<span id="evade-time" style="font-weight:800;font-size:1.2em;font-variant-numeric:tabular-nums;min-width:50px;">0.0s</span>' +
+          '<span style="color:#94a3b8;font-size:13px;" id="evade-best"></span>' +
+          '</div>';
+        document.body.appendChild(timerEl);
+        updateBestDisplay();
+      }
+
+      function updateBestDisplay() {
+        var bestEl = document.getElementById('evade-best');
+        if (bestEl && bestTime > 0) bestEl.textContent = 'Best: ' + bestTime.toFixed(1) + 's';
+      }
+
+      function startTimer() {
+        waveStart = performance.now();
+        if (!timerEl) createTimer();
+        timerEl.style.opacity = '1';
+        tickTimer();
+      }
+
+      function tickTimer() {
+        if (!waveStart) return;
+        var elapsed = (performance.now() - waveStart) / 1000;
+        var el = document.getElementById('evade-time');
+        if (el) el.textContent = elapsed.toFixed(1) + 's';
+        requestAnimationFrame(tickTimer);
+      }
+
+      function getSpeed() {
+        if (!waveStart) return 1.5;
+        var elapsed = (performance.now() - waveStart) / 1000;
+        return 1.5 + elapsed * 0.15;
+      }
+
+      function stopTimer() {
+        if (!waveStart) return;
+        var elapsed = (performance.now() - waveStart) / 1000;
+        if (elapsed > bestTime) {
+          bestTime = Math.round(elapsed * 10) / 10;
+          localStorage.setItem('pigeon-best', bestTime.toString());
+          updateBestDisplay();
+        }
+        waveStart = 0;
+        setTimeout(function () { if (timerEl) timerEl.style.opacity = '0'; }, 2000);
+      }
+
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function spawnChaser() {
+        var el = document.createElement('div');
+        el.textContent = '🕊️';
+        var size = 24 + Math.floor(Math.random() * 24);
+        el.style.cssText = 'position:fixed;z-index:80;pointer-events:none;font-size:' + size + 'px;transition:opacity 0.5s;';
+
+        var side = Math.floor(Math.random() * 4);
+        var x, y;
+        if (side === 0) { x = -40; y = Math.random() * window.innerHeight; }
+        else if (side === 1) { x = window.innerWidth + 40; y = Math.random() * window.innerHeight; }
+        else if (side === 2) { x = Math.random() * window.innerWidth; y = -40; }
+        else { x = Math.random() * window.innerWidth; y = window.innerHeight + 40; }
+
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        document.body.appendChild(el);
+        var pigeon = { el: el, alive: true };
+        activePigeons.push(pigeon);
+
+        var wobbleOffset = Math.random() * Math.PI * 2;
+        var jitter = (Math.random() - 0.5) * 0.6;
+
+        function chase() {
+          if (!pigeon.alive) return;
+          var dx = mouseX - x;
+          var dy = mouseY - y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 20) {
+            pigeon.alive = false;
+            el.style.opacity = '0';
+            el.style.transform = 'scale(1.5)';
+            el.style.transition = 'opacity 0.6s, transform 0.6s';
+            setTimeout(function () { el.remove(); }, 600);
+            endWave();
+            return;
+          }
+
+          var speed = getSpeed() + jitter;
+          var nx = dx / dist;
+          var ny = dy / dist;
+          x += nx * speed;
+          y += ny * speed;
+
+          wobbleOffset += 0.08;
+          var wobbleY = Math.sin(wobbleOffset) * 6;
+
+          el.style.left = x + 'px';
+          el.style.top = (y + wobbleY) + 'px';
+          el.style.transform = nx < 0 ? 'scaleX(1)' : 'scaleX(-1)';
+
+          requestAnimationFrame(chase);
+        }
+
+        requestAnimationFrame(chase);
+      }
+
+      function endWave() {
+        if (escalationTimer) {
+          clearInterval(escalationTimer);
+          escalationTimer = null;
+        }
+        activePigeons.forEach(function (p) {
+          if (p.alive) {
+            p.alive = false;
+            p.el.style.opacity = '0';
+            p.el.style.transition = 'opacity 0.6s';
+            setTimeout(function () { p.el.remove(); }, 600);
+          }
+        });
+        activePigeons = [];
+        stopTimer();
+        startWave();
+      }
+
+      function startWave() {
+        setTimeout(function () {
+          startTimer();
+          spawnChaser();
+          escalationTimer = setInterval(function () {
+            spawnChaser();
+          }, 8000);
+        }, 15000 + Math.random() * 15000);
+      }
+
+      // First wave
+      setTimeout(function () {
+        startTimer();
+        spawnChaser();
+        escalationTimer = setInterval(function () {
+          spawnChaser();
+        }, 8000);
+      }, 10000 + Math.random() * 10000);
+    })();
+  </script>
+
   <!-- Cookie Banner -->
   <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[100] bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-6 py-4 shadow-lg transition-transform duration-300">
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
