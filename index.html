@@ -686,6 +686,10 @@
         50% { opacity:1; transform:translate(-50%,-50%) scale(1.3); }
         100% { opacity:0; transform:translate(-50%,-50%) scale(1.6); }
       }
+      @keyframes fadeIn {
+        from { opacity:0; transform:scale(0.95); }
+        to { opacity:1; transform:scale(1); }
+      }
     </style>
   </section>
 
@@ -1540,16 +1544,174 @@
         }, 500);
       }
 
+      function getTitle(secs) {
+        if (secs < 5) return 'Pigeon Appetizer';
+        if (secs < 10) return 'Feather Dodger';
+        if (secs < 20) return 'Wing Evader';
+        if (secs < 30) return 'Flock Survivor';
+        if (secs < 45) return 'Talon Dancer';
+        if (secs < 60) return 'Sky Marshal';
+        return 'Pigeon God';
+      }
+
+      function generateScoreImage(secs, callback) {
+        var c = document.createElement('canvas');
+        c.width = 600; c.height = 400;
+        var ctx = c.getContext('2d');
+
+        // Background gradient
+        var grad = ctx.createLinearGradient(0, 0, 600, 400);
+        grad.addColorStop(0, '#4c1d95');
+        grad.addColorStop(1, '#7c3aed');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 600, 400);
+
+        // Decorative circles
+        ctx.globalAlpha = 0.08;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(500, 80, 120, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(100, 350, 80, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // Pigeon emoji top
+        ctx.font = '48px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('🕊️', 300, 65);
+
+        // Title
+        ctx.fillStyle = '#e2d9f3';
+        ctx.font = 'bold 16px system-ui, sans-serif';
+        ctx.fillText('RENT-A-PIGEON EVASION CHALLENGE', 300, 110);
+
+        // Score
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 72px system-ui, sans-serif';
+        ctx.fillText(secs.toFixed(1) + 's', 300, 200);
+
+        // Rank title
+        var title = getTitle(secs);
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 28px system-ui, sans-serif';
+        ctx.fillText(title, 300, 250);
+
+        // Flavor text
+        ctx.fillStyle = '#c4b5fd';
+        ctx.font = '15px system-ui, sans-serif';
+        var flavors = [
+          'The pigeons remember your face.',
+          'No cursor is safe.',
+          'They will find you. They always do.',
+          'The flock is impressed. Slightly.',
+          'You have been added to the pigeon watchlist.',
+          'Your evasion skills are... adequate.',
+        ];
+        ctx.fillText(flavors[Math.floor(Math.random() * flavors.length)], 300, 290);
+
+        // URL
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = '13px system-ui, sans-serif';
+        ctx.fillText('jeppeolesen.github.io/rent-a-pigeon \u2022 Can you beat this?', 300, 370);
+
+        c.toBlob(function (blob) { callback(blob, c); }, 'image/png');
+      }
+
+      var shareOverlay = null;
+
+      function showShareCard(secs) {
+        if (shareOverlay) shareOverlay.remove();
+        generateScoreImage(secs, function (blob, canvas) {
+          shareOverlay = document.createElement('div');
+          shareOverlay.style.cssText = 'position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);animation:fadeIn .3s;cursor:default;';
+
+          var card = document.createElement('div');
+          card.style.cssText = 'background:#1e1b4b;border-radius:16px;padding:20px;text-align:center;max-width:90vw;box-shadow:0 25px 50px rgba(0,0,0,.5);';
+
+          var img = document.createElement('img');
+          img.src = canvas.toDataURL('image/png');
+          img.style.cssText = 'width:100%;max-width:500px;border-radius:10px;display:block;margin:0 auto;';
+          card.appendChild(img);
+
+          var btnRow = document.createElement('div');
+          btnRow.style.cssText = 'display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;';
+
+          // Share button (native share or download)
+          if (navigator.share && navigator.canShare) {
+            var shareBtn = document.createElement('button');
+            shareBtn.textContent = '📤 Share';
+            shareBtn.style.cssText = 'background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:99px;font-weight:700;font-size:15px;cursor:pointer;font-family:system-ui;';
+            shareBtn.onclick = function () {
+              var file = new File([blob], 'pigeon-score.png', { type: 'image/png' });
+              navigator.share({
+                title: 'Rent-A-Pigeon Evasion Score',
+                text: 'I survived ' + secs.toFixed(1) + 's against the pigeon flock! ' + getTitle(secs) + ' 🕊️',
+                files: [file]
+              }).catch(function () {});
+            };
+            btnRow.appendChild(shareBtn);
+          }
+
+          // Download button
+          var dlBtn = document.createElement('button');
+          dlBtn.textContent = '💾 Save Image';
+          dlBtn.style.cssText = 'background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:99px;font-weight:700;font-size:15px;cursor:pointer;font-family:system-ui;';
+          dlBtn.onclick = function () {
+            var a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = 'pigeon-score-' + secs.toFixed(1) + 's.png';
+            a.click();
+          };
+          btnRow.appendChild(dlBtn);
+
+          // Copy button
+          var copyBtn = document.createElement('button');
+          copyBtn.textContent = '📋 Copy Text';
+          copyBtn.style.cssText = 'background:transparent;color:#c4b5fd;border:1px solid #c4b5fd;padding:10px 24px;border-radius:99px;font-weight:700;font-size:15px;cursor:pointer;font-family:system-ui;';
+          copyBtn.onclick = function () {
+            navigator.clipboard.writeText(
+              'I survived ' + secs.toFixed(1) + 's against the Rent-A-Pigeon flock! 🕊️ Rank: ' + getTitle(secs) + ' — Can you beat me? jeppeolesen.github.io/rent-a-pigeon'
+            ).then(function () { copyBtn.textContent = '✓ Copied!'; });
+          };
+          btnRow.appendChild(copyBtn);
+
+          card.appendChild(btnRow);
+          shareOverlay.appendChild(card);
+          document.body.appendChild(shareOverlay);
+
+          // Dismiss share card
+          function dismissShare() {
+            if (shareOverlay) { shareOverlay.remove(); shareOverlay = null; }
+          }
+          shareOverlay.addEventListener('click', function (e) {
+            if (e.target === shareOverlay) dismissShare();
+          });
+
+          // Close button
+          var closeBtn = document.createElement('button');
+          closeBtn.textContent = '✕';
+          closeBtn.style.cssText = 'position:absolute;top:12px;right:16px;background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;font-family:system-ui;';
+          closeBtn.onclick = dismissShare;
+          card.style.position = 'relative';
+          card.appendChild(closeBtn);
+        });
+      }
+
       function stopTimer() {
         if (!waveStart) return;
         var elapsed = (performance.now() - waveStart) / 1000;
+        var isNewBest = false;
         if (elapsed > bestTime) {
           bestTime = Math.round(elapsed * 10) / 10;
           localStorage.setItem('pigeon-best', bestTime.toString());
           updateBestDisplay();
+          isNewBest = true;
         }
+        var finalTime = Math.round(elapsed * 10) / 10;
         waveStart = 0;
-        setTimeout(function () { if (timerEl) timerEl.style.opacity = '0'; }, 2000);
+        // Show share card after a short delay
+        setTimeout(function () {
+          if (timerEl) timerEl.style.opacity = '0';
+          showShareCard(finalTime);
+        }, 800);
       }
 
       document.addEventListener('mousemove', function (e) {
@@ -1641,11 +1803,11 @@
 
       function endWave() {
         if (escalationTimer) {
-          clearInterval(escalationTimer);
+          clearTimeout(escalationTimer);
           escalationTimer = null;
         }
         if (owlTimer) {
-          clearInterval(owlTimer);
+          clearTimeout(owlTimer);
           owlTimer = null;
         }
         if (surgeTimer) {
@@ -1674,7 +1836,7 @@
         resetWalls();
         removeFog();
         if (surgeWarning) { surgeWarning.remove(); surgeWarning = null; }
-        startWave();
+        showPlayButton();
       }
 
       function scheduleEscalation() {
@@ -1722,15 +1884,49 @@
         scheduleTeleports();
       }
 
-      function startWave() {
-        setTimeout(function () {
-          beginWave();
-        }, 15000 + Math.random() * 15000);
+      var playBtn = null;
+      var hasAutoPlayed = false;
+
+      function showPlayButton() {
+        if (playBtn) return;
+        playBtn = document.createElement('button');
+        playBtn.innerHTML = '🕊️ Evade the Flock';
+        playBtn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:80;background:#7c3aed;color:#fff;border:none;padding:12px 24px;border-radius:99px;font-weight:800;font-size:15px;cursor:pointer;font-family:system-ui;box-shadow:0 4px 20px rgba(124,58,237,.4);transition:transform 0.2s,opacity 0.3s;opacity:0;';
+        playBtn.onmouseenter = function () { playBtn.style.transform = 'scale(1.05)'; };
+        playBtn.onmouseleave = function () { playBtn.style.transform = 'scale(1)'; };
+        playBtn.onclick = function () {
+          playBtn.style.opacity = '0';
+          setTimeout(function () {
+            if (playBtn) { playBtn.remove(); playBtn = null; }
+          }, 300);
+          // Short countdown before wave starts
+          var countdown = document.createElement('div');
+          countdown.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:85;pointer-events:none;font-family:system-ui;text-align:center;color:#fff;font-weight:900;font-size:4rem;text-shadow:0 0 30px rgba(124,58,237,.8);';
+          document.body.appendChild(countdown);
+          var count = 3;
+          countdown.textContent = count;
+          var iv = setInterval(function () {
+            count--;
+            if (count > 0) {
+              countdown.textContent = count;
+            } else {
+              clearInterval(iv);
+              countdown.remove();
+              beginWave();
+            }
+          }, 700);
+        };
+        document.body.appendChild(playBtn);
+        // Fade in after a beat
+        setTimeout(function () { if (playBtn) playBtn.style.opacity = '1'; }, 100);
       }
 
-      // First wave
+      // Auto-trigger once after a delay, then it's button-driven
       setTimeout(function () {
-        beginWave();
+        if (!hasAutoPlayed) {
+          hasAutoPlayed = true;
+          beginWave();
+        }
       }, 10000 + Math.random() * 10000);
     })();
   </script>
