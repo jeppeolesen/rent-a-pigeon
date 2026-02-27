@@ -944,5 +944,65 @@
     })();
   </script>
 
+  <!-- Easter Egg: Konami Code -->
+  <script>
+    (function () {
+      var konami = [38,38,40,40,37,39,37,39,66,65];
+      var pos = 0;
+      document.addEventListener('keydown', function (e) {
+        if (e.keyCode === konami[pos]) {
+          pos++;
+          if (pos === konami.length) {
+            pos = 0;
+            pigeonInvasion();
+          }
+        } else {
+          pos = 0;
+        }
+      });
+
+      function pigeonInvasion() {
+        var pigeons = ['🐦','🕊️','🐔','🦅','🦆','🐧'];
+        var count = 60;
+        var container = document.createElement('div');
+        container.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;';
+        document.body.appendChild(container);
+
+        for (var i = 0; i < count; i++) {
+          (function (i) {
+            setTimeout(function () {
+              var el = document.createElement('div');
+              var bird = pigeons[Math.floor(Math.random() * pigeons.length)];
+              var left = Math.random() * 100;
+              var size = 24 + Math.random() * 32;
+              var duration = 2 + Math.random() * 3;
+              var sway = (Math.random() - 0.5) * 200;
+              el.textContent = bird;
+              el.style.cssText = 'position:absolute;top:-60px;left:' + left + '%;font-size:' + size + 'px;animation:pigeon-fall ' + duration + 's ease-in forwards;--sway:' + sway + 'px;';
+              container.appendChild(el);
+            }, i * 80);
+          })(i);
+        }
+
+        setTimeout(function () {
+          var msg = document.createElement('div');
+          msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10000;background:rgba(0,0,0,.85);color:#fff;padding:2rem 3rem;border-radius:1rem;text-align:center;font-family:system-ui;pointer-events:none;';
+          msg.innerHTML = '<div style="font-size:3rem;margin-bottom:.5rem;">&#x1F54A;&#xFE0F;</div><div style="font-size:1.25rem;font-weight:800;margin-bottom:.25rem;">THE FLOCK HAS BEEN UNLEASHED</div><div style="font-size:.85rem;color:#94a3b8;">You found the secret. The pigeons remember.</div>';
+          document.body.appendChild(msg);
+          setTimeout(function () {
+            container.remove();
+            msg.remove();
+          }, 4000);
+        }, 2000);
+      }
+    })();
+  </script>
+  <style>
+    @keyframes pigeon-fall {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) translateX(var(--sway)) rotate(720deg); opacity: 0; }
+    }
+  </style>
+
 </body>
 </html>
