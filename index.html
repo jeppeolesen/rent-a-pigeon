@@ -681,6 +681,11 @@
         0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,.5); }
         50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
       }
+      @keyframes surgePulse {
+        0% { opacity:1; transform:translate(-50%,-50%) scale(0.5); }
+        50% { opacity:1; transform:translate(-50%,-50%) scale(1.3); }
+        100% { opacity:0; transform:translate(-50%,-50%) scale(1.6); }
+      }
     </style>
   </section>
 
@@ -1183,12 +1188,17 @@
       var activeOwls = [];
       var escalationTimer = null;
       var owlTimer = null;
+      var surgeTimer = null;
+      var fogEl = null;
       var waveStart = 0;
       var wallEl = null;
       var narrowingStart = 15; // seconds before walls start closing
       var narrowingRate = 3; // pixels per second per side
       var bestTime = parseFloat(localStorage.getItem('pigeon-best') || '0');
       var timerEl = null;
+      var fogActive = false;
+      var fogStart = 25; // seconds before fog appears
+      var surgeWarning = null;
 
       function createTimer() {
         timerEl = document.createElement('div');
@@ -1214,29 +1224,211 @@
         tickTimer();
       }
 
+      var lastSurge = 0;
       function tickTimer() {
         if (!waveStart) return;
         var elapsed = (performance.now() - waveStart) / 1000;
         var el = document.getElementById('evade-time');
         if (el) el.textContent = elapsed.toFixed(1) + 's';
         updateWalls();
+        // Fog of war kicks in
+        if (elapsed >= fogStart && !fogActive) createFog();
+        if (fogActive) updateFog();
+        // Speed surge warning
+        if (elapsed > 10 && Math.sin(elapsed * 0.52) > 0.85) {
+          if (performance.now() - lastSurge > 3000) {
+            lastSurge = performance.now();
+            showSurgeWarning();
+          }
+        }
         requestAnimationFrame(tickTimer);
+      }
+
+      function getElapsed() {
+        if (!waveStart) return 0;
+        return (performance.now() - waveStart) / 1000;
       }
 
       function getSpeed() {
         if (!waveStart) return 1.5;
-        var elapsed = (performance.now() - waveStart) / 1000;
-        return 1.5 + elapsed * 0.15;
+        var elapsed = getElapsed();
+        var base = 1.5 + elapsed * 0.18;
+        // Surge: brief speed boost every 12s after 10s
+        if (elapsed > 10 && Math.sin(elapsed * 0.52) > 0.85) base *= 1.8;
+        return base;
+      }
+
+      function getEscalationInterval() {
+        var elapsed = getElapsed();
+        // Pigeon spawn rate: 8s -> 6s -> 4s -> 2.5s over time
+        return Math.max(2500, 8000 - elapsed * 150);
+      }
+
+      function getOwlInterval() {
+        var elapsed = getElapsed();
+        // Owl spawn rate: 5s -> 1.5s over time
+        return Math.max(1500, 5000 - elapsed * 100);
       }
 
       function getWallInset() {
         if (!waveStart) return 0;
-        var elapsed = (performance.now() - waveStart) / 1000;
+        var elapsed = getElapsed();
         if (elapsed < narrowingStart) return 0;
-        return Math.floor((elapsed - narrowingStart) * narrowingRate);
+        // Walls accelerate over time
+        var t = elapsed - narrowingStart;
+        return Math.floor(t * narrowingRate + t * t * 0.08);
       }
 
-      function spawnOwl() {
+      // Fog of war - visibility shrinks around cursor
+      function createFog() {
+        if (fogEl) return;
+        fogEl = document.createElement('div');
+        fogEl.id = 'pigeon-fog';
+        fogEl.style.cssText = 'position:fixed;inset:0;z-index:78;pointer-events:none;transition:opacity 2s;opacity:0;';
+        fogEl.innerHTML = '<div style="position:absolute;inset:0;background:radial-gradient(circle 300px at var(--fx,50%) var(--fy,50%),transparent 0%,rgba(0,0,0,.0) 40%,rgba(0,0,0,.85) 100%);"></div>';
+        document.body.appendChild(fogEl);
+        setTimeout(function () { if (fogEl) fogEl.style.opacity = '1'; }, 50);
+        fogActive = true;
+      }
+
+      function updateFog() {
+        if (!fogEl || !fogActive) return;
+        var elapsed = getElapsed();
+        // Shrink visibility radius over time: 300px -> 120px
+        var radius = Math.max(120, 300 - (elapsed - fogStart) * 4);
+        var inner = fogEl.firstChild;
+        inner.style.background = 'radial-gradient(circle ' + radius + 'px at ' + mouseX + 'px ' + mouseY + 'px, transparent 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,.85) 100%)';
+      }
+
+      function removeFog() {
+        fogActive = false;
+        if (fogEl) {
+          fogEl.style.opacity = '0';
+          var el = fogEl;
+          fogEl = null;
+          setTimeout(function () { el.remove(); }, 2000);
+        }
+      }
+
+      // Speed surge warning flash
+      function showSurgeWarning() {
+        if (surgeWarning) return;
+        surgeWarning = document.createElement('div');
+        surgeWarning.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:81;pointer-events:none;font-family:system-ui;text-align:center;animation:surgePulse 0.6s ease-out forwards;';
+        surgeWarning.innerHTML = '<div style="font-size:2.5rem;">⚡</div><div style="font-size:1rem;font-weight:800;color:#ef4444;text-shadow:0 0 20px rgba(239,68,68,.6);">SPEED SURGE</div>';
+        document.body.appendChild(surgeWarning);
+        setTimeout(function () {
+          if (surgeWarning) { surgeWarning.remove(); surgeWarning = null; }
+        }, 800);
+      }
+
+      // Owl swarm - volley of 3-5 owls at once
+      function spawnOwlSwarm() {
+        var count = 3 + Math.floor(Math.random() * 3);
+        var side = Math.floor(Math.random() * 4);
+        for (var i = 0; i < count; i++) {
+          (function (delay) {
+            setTimeout(function () { spawnOwl(side); }, delay);
+          })(i * 150);
+        }
+      }
+
+      // Homing owl - curves toward cursor
+      function spawnHomingOwl() {
+        var el = document.createElement('div');
+        el.textContent = '🦅';
+        var size = 32 + Math.floor(Math.random() * 16);
+        el.style.cssText = 'position:fixed;z-index:80;pointer-events:none;font-size:' + size + 'px;transition:opacity 0.4s;filter:drop-shadow(0 0 6px rgba(239,68,68,.5));';
+
+        var W = window.innerWidth;
+        var H = window.innerHeight;
+        var side = Math.floor(Math.random() * 4);
+        var x, y;
+        if (side === 0) { x = -40; y = Math.random() * H; }
+        else if (side === 1) { x = W + 40; y = Math.random() * H; }
+        else if (side === 2) { x = Math.random() * W; y = -40; }
+        else { x = Math.random() * W; y = H + 40; }
+
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        document.body.appendChild(el);
+        var owl = { el: el, alive: true };
+        activeOwls.push(owl);
+
+        var speed = 4 + Math.random() * 2;
+        // Initial direction toward cursor
+        var dx = mouseX - x;
+        var dy = mouseY - y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var vx = (dx / dist) * speed;
+        var vy = (dy / dist) * speed;
+
+        function fly() {
+          if (!owl.alive) return;
+          // Gently curve toward cursor (homing)
+          var tdx = mouseX - x;
+          var tdy = mouseY - y;
+          var tdist = Math.sqrt(tdx * tdx + tdy * tdy);
+          if (tdist > 0) {
+            vx += (tdx / tdist) * 0.08;
+            vy += (tdy / tdist) * 0.08;
+          }
+          // Normalize to maintain speed
+          var vdist = Math.sqrt(vx * vx + vy * vy);
+          vx = (vx / vdist) * speed;
+          vy = (vy / vdist) * speed;
+
+          x += vx;
+          y += vy;
+          el.style.left = x + 'px';
+          el.style.top = y + 'px';
+          el.style.transform = vx > 0 ? 'scaleX(-1)' : 'scaleX(1)';
+
+          var cdx = mouseX - x;
+          var cdy = mouseY - y;
+          if (Math.sqrt(cdx * cdx + cdy * cdy) < 22) {
+            owl.alive = false;
+            el.style.opacity = '0';
+            setTimeout(function () { el.remove(); }, 400);
+            endWave();
+            return;
+          }
+
+          // Homing owls time out after 8s
+          if (!owl.spawnTime) owl.spawnTime = performance.now();
+          if (performance.now() - owl.spawnTime > 8000) {
+            owl.alive = false;
+            el.style.opacity = '0';
+            setTimeout(function () { el.remove(); }, 400);
+            return;
+          }
+
+          requestAnimationFrame(fly);
+        }
+        requestAnimationFrame(fly);
+      }
+
+      // Pigeon teleport - random pigeon blinks closer to cursor
+      function triggerTeleport() {
+        var alive = activePigeons.filter(function (p) { return p.alive; });
+        if (alive.length === 0) return;
+        var p = alive[Math.floor(Math.random() * alive.length)];
+        if (!p.alive) return;
+        // Flash effect
+        p.el.style.transition = 'opacity 0.1s';
+        p.el.style.opacity = '0.2';
+        setTimeout(function () {
+          if (!p.alive) return;
+          // Teleport 60-70% closer to cursor
+          var closeFactor = 0.6 + Math.random() * 0.1;
+          p.teleportX = p.x + (mouseX - p.x) * closeFactor;
+          p.teleportY = p.y + (mouseY - p.y) * closeFactor;
+          p.el.style.opacity = '1';
+          p.el.style.transition = 'opacity 0.15s';
+        }, 150);
+      }
+
+      function spawnOwl(forceSide) {
         var el = document.createElement('div');
         el.textContent = '🦉';
         var size = 28 + Math.floor(Math.random() * 20);
@@ -1247,8 +1439,7 @@
         var H = window.innerHeight;
         var startX, startY, endX, endY;
 
-        // Pick a random edge to enter from, exit on opposite or adjacent edge
-        var side = Math.floor(Math.random() * 4);
+        var side = forceSide !== undefined ? forceSide : Math.floor(Math.random() * 4);
         if (side === 0) { // left
           startX = inset - 40;
           startY = inset + Math.random() * (H - inset * 2);
@@ -1388,7 +1579,7 @@
         el.style.left = x + 'px';
         el.style.top = y + 'px';
         document.body.appendChild(el);
-        var pigeon = { el: el, alive: true };
+        var pigeon = { el: el, alive: true, x: x, y: y };
         activePigeons.push(pigeon);
 
         var wobbleOffset = Math.random() * Math.PI * 2;
@@ -1396,6 +1587,15 @@
 
         function chase() {
           if (!pigeon.alive) return;
+
+          // Handle teleport
+          if (pigeon.teleportX !== undefined) {
+            x = pigeon.teleportX;
+            y = pigeon.teleportY;
+            delete pigeon.teleportX;
+            delete pigeon.teleportY;
+          }
+
           var dx = mouseX - x;
           var dy = mouseY - y;
           var dist = Math.sqrt(dx * dx + dy * dy);
@@ -1423,6 +1623,8 @@
           var ny = dy / dist;
           x += nx * speed;
           y += ny * speed;
+          pigeon.x = x;
+          pigeon.y = y;
 
           wobbleOffset += 0.08;
           var wobbleY = Math.sin(wobbleOffset) * 6;
@@ -1446,6 +1648,10 @@
           clearInterval(owlTimer);
           owlTimer = null;
         }
+        if (surgeTimer) {
+          clearInterval(surgeTimer);
+          surgeTimer = null;
+        }
         activePigeons.forEach(function (p) {
           if (p.alive) {
             p.alive = false;
@@ -1466,32 +1672,65 @@
         activeOwls = [];
         stopTimer();
         resetWalls();
+        removeFog();
+        if (surgeWarning) { surgeWarning.remove(); surgeWarning = null; }
         startWave();
+      }
+
+      function scheduleEscalation() {
+        escalationTimer = setTimeout(function () {
+          if (!waveStart) return;
+          spawnChaser();
+          scheduleEscalation();
+        }, getEscalationInterval());
+      }
+
+      function scheduleOwls() {
+        owlTimer = setTimeout(function () {
+          if (!waveStart) return;
+          var elapsed = getElapsed();
+          // After 20s, chance of owl swarm instead of single owl
+          if (elapsed > 20 && Math.random() < 0.3) {
+            spawnOwlSwarm();
+          } else {
+            spawnOwl();
+          }
+          // After 30s, homing eagles appear
+          if (elapsed > 30 && Math.random() < 0.35) {
+            spawnHomingOwl();
+          }
+          scheduleOwls();
+        }, getOwlInterval());
+      }
+
+      function scheduleTeleports() {
+        surgeTimer = setInterval(function () {
+          if (!waveStart) return;
+          var elapsed = getElapsed();
+          // Teleports start after 18s, more frequent over time
+          if (elapsed > 18 && Math.random() < Math.min(0.6, (elapsed - 18) * 0.03)) {
+            triggerTeleport();
+          }
+        }, 3000);
+      }
+
+      function beginWave() {
+        startTimer();
+        spawnChaser();
+        scheduleEscalation();
+        scheduleOwls();
+        scheduleTeleports();
       }
 
       function startWave() {
         setTimeout(function () {
-          startTimer();
-          spawnChaser();
-          escalationTimer = setInterval(function () {
-            spawnChaser();
-          }, 8000);
-          owlTimer = setInterval(function () {
-            spawnOwl();
-          }, 3000 + Math.random() * 4000);
+          beginWave();
         }, 15000 + Math.random() * 15000);
       }
 
       // First wave
       setTimeout(function () {
-        startTimer();
-        spawnChaser();
-        escalationTimer = setInterval(function () {
-          spawnChaser();
-        }, 8000);
-        owlTimer = setInterval(function () {
-          spawnOwl();
-        }, 3000 + Math.random() * 4000);
+        beginWave();
       }, 10000 + Math.random() * 10000);
     })();
   </script>
