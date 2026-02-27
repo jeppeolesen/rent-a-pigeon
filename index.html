@@ -403,7 +403,7 @@
     <h2 class="text-3xl font-extrabold text-center mb-3">Latest Missions</h2>
     <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Live from the field. Our pigeons are everywhere.</p>
     <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
-      <div id="mission-map" class="w-full h-[500px]"></div>
+      <div id="mission-map" class="w-full h-[500px] z-0"></div>
     </div>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -570,6 +570,79 @@
           <p class="text-slate-400 text-sm">Pair a message delivery with a tactical poop strike and save 15%. We call it the "Sweet &amp; Sour" combo. Your target won't know what hit them — literally.</p>
         </div>
       </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20 px-8 bg-white dark:bg-slate-800">
+    <h2 class="text-3xl font-extrabold text-center mb-3">Frequently Asked Questions</h2>
+    <p class="text-center text-slate-400 max-w-lg mx-auto mb-12 text-base">Everything you wanted to know but were too afraid to coo.</p>
+    <div class="max-w-3xl mx-auto space-y-3">
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          Are the pigeons actually real?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Absolutely. Every single pigeon is a 100% genuine, feathered, cooing bird. We do not use drones, holograms, or sparrows in trench coats. Please refer to our legally binding disclaimer at the bottom of this page.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          What if my pigeon doesn't arrive?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">All missions are backed by our Coo Guarantee. If your pigeon fails to deliver within the stated window, we'll send a replacement bird free of charge — plus a complimentary poop strike on a target of your choosing as an apology.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          Can I choose a specific pigeon?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Yes! All of our top performers are available for booking by name. Big Tony, Madame Fleur, Ghostie, and Turbo Dave each have their own specialties. For custom requests, our pigeon handler team will match you with the ideal bird.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          Is tactical pooping legal?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Technically, a bird pooping is a natural event and therefore an act of nature. Our legal team has confirmed this in 47 out of 63 countries we operate in. In the remaining 16, we offer the Disguise Kit add-on for plausible deniability.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          What about the nut allergy warning?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Our pigeons forage freely and we cannot fully control their diet. Trace amounts of nuts may be present in or on the pigeon at time of deployment. We recommend keeping an EpiPen handy, just in case. This is not medical advice.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          Do you really have no ties to the CIA?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Officially, no. Unofficially, we can neither confirm nor deny any relationship with any three-letter agency or breakfast-oriented restaurant chain. Next question.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          Can pigeons deliver internationally?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">Yes. Our birds operate in 63 countries and hold valid migration visas. Transoceanic deliveries use our relay network — a chain of pigeons stationed on cargo ships. Delivery times vary, but the vibes are immaculate.</div>
+      </details>
+
+      <details class="group bg-slate-50 dark:bg-slate-700 rounded-2xl">
+        <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold list-none [&::-webkit-details-marker]:hidden">
+          What happens to the pigeon after the mission?
+          <span class="text-plum text-xl transition-transform group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-sm text-slate-500 dark:text-slate-400">All pigeons return to their home roost for debriefing, a seed buffet, and a well-earned nap. They are never harmed, overworked, or asked to attend meetings. They live better lives than most of us.</div>
+      </details>
 
     </div>
   </section>
