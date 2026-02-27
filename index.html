@@ -624,10 +624,12 @@
           iconAnchor: [7, 7]
         });
 
+        var liveMarkers = [];
+
         missions.forEach(function (m) {
           var icon = m.status === 'In Flight' ? activeIcon : plumIcon;
           var statusColor = m.status === 'In Flight' ? '#f59e0b' : '#7c3aed';
-          L.marker([m.lat, m.lng], { icon: icon })
+          var marker = L.marker([m.lat, m.lng], { icon: icon })
             .addTo(map)
             .bindPopup(
               '<div style="font-family:system-ui;min-width:160px;">' +
@@ -637,7 +639,41 @@
               '<span style="display:inline-block;margin-top:4px;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;color:#fff;background:' + statusColor + ';">' + m.status + '</span>' +
               '</div>'
             );
+          if (m.status === 'In Flight') {
+            liveMarkers.push({
+              marker: marker,
+              baseLat: m.lat,
+              baseLng: m.lng,
+              angle: Math.random() * Math.PI * 2,
+              speed: 0.3 + Math.random() * 0.4,
+              radius: 0.15 + Math.random() * 0.25,
+              drift: { lat: 0, lng: 0 },
+              driftTarget: { lat: (Math.random() - 0.5) * 0.8, lng: (Math.random() - 0.5) * 0.8 }
+            });
+          }
         });
+
+        // Animate live tracking markers
+        function animateLive() {
+          liveMarkers.forEach(function (m) {
+            m.angle += m.speed * 0.02;
+            // Slowly drift the center point for a wandering effect
+            m.drift.lat += (m.driftTarget.lat - m.drift.lat) * 0.002;
+            m.drift.lng += (m.driftTarget.lng - m.drift.lng) * 0.002;
+            // Pick new drift target occasionally
+            if (Math.random() < 0.005) {
+              m.driftTarget.lat = (Math.random() - 0.5) * 0.8;
+              m.driftTarget.lng = (Math.random() - 0.5) * 0.8;
+            }
+            var jitterLat = (Math.random() - 0.5) * 0.01;
+            var jitterLng = (Math.random() - 0.5) * 0.01;
+            var lat = m.baseLat + m.drift.lat + Math.sin(m.angle) * m.radius + jitterLat;
+            var lng = m.baseLng + m.drift.lng + Math.cos(m.angle * 0.7) * m.radius + jitterLng;
+            m.marker.setLatLng([lat, lng]);
+          });
+          requestAnimationFrame(animateLive);
+        }
+        animateLive();
       })();
     </script>
     <style>
