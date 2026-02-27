@@ -1111,6 +1111,80 @@
     })();
   </script>
 
+  <!-- Social Proof Popups -->
+  <script>
+    (function () {
+      var proofs = [
+        { city: 'Tokyo', flag: '🇯🇵', action: 'booked a surveillance pigeon' },
+        { city: 'London', flag: '🇬🇧', action: 'ordered a tactical pooping strike' },
+        { city: 'New York', flag: '🇺🇸', action: 'rented 3 pigeons for recon' },
+        { city: 'Berlin', flag: '🇩🇪', action: 'sent a love letter by pigeon' },
+        { city: 'Sydney', flag: '🇦🇺', action: 'hired Big Tony for a birthday bombing' },
+        { city: 'Paris', flag: '🇫🇷', action: 'upgraded to Fleet Commander' },
+        { city: 'Dubai', flag: '🇦🇪', action: 'booked a disguised recon mission' },
+        { city: 'Copenhagen', flag: '🇩🇰', action: 'subscribed to The Coo Dispatch' },
+        { city: 'Rio de Janeiro', flag: '🇧🇷', action: 'ordered an emergency poop airstrike' },
+        { city: 'Toronto', flag: '🇨🇦', action: 'hired Ghostie for night ops' },
+        { city: 'Rome', flag: '🇮🇹', action: 'requested a skywriting proposal' },
+        { city: 'Austin', flag: '🇺🇸', action: 'signed up for Enterprise tier' },
+        { city: 'Mumbai', flag: '🇮🇳', action: 'booked Turbo Dave for express delivery' },
+        { city: 'Seoul', flag: '🇰🇷', action: 'ordered the decoy pigeon add-on' },
+        { city: 'Stockholm', flag: '🇸🇪', action: 'rented a pigeon bodyguard' },
+        { city: 'Cape Town', flag: '🇿🇦', action: 'hired Madame Fleur for a secret message' },
+        { city: 'Osaka', flag: '🇯🇵', action: 'ordered matching pigeon outfits' },
+        { city: 'Mexico City', flag: '🇲🇽', action: 'booked a flock for a corporate event' },
+      ];
+      var names = ['Someone', 'A verified customer', 'An anonymous client', 'A returning customer', 'A new member', 'A strategic thinker'];
+      var el = null;
+      var hideTimeout = null;
+
+      function showProof() {
+        var p = proofs[Math.floor(Math.random() * proofs.length)];
+        var name = names[Math.floor(Math.random() * names.length)];
+        var ago = Math.floor(Math.random() * 12) + 1;
+
+        if (el) el.remove();
+        el = document.createElement('div');
+        el.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:70;max-width:340px;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.15);padding:14px 18px;font-family:system-ui;font-size:13px;transform:translateY(120%);transition:transform 0.4s cubic-bezier(.22,1,.36,1),opacity 0.4s;opacity:0;cursor:default;';
+
+        var isDark = document.documentElement.classList.contains('dark');
+        if (isDark) el.style.background = '#1e293b';
+
+        el.innerHTML =
+          '<div style="display:flex;align-items:center;gap:10px;">' +
+            '<div style="font-size:1.6rem;line-height:1;">' + p.flag + '</div>' +
+            '<div>' +
+              '<div style="font-weight:700;color:' + (isDark ? '#f1f5f9' : '#1e293b') + ';">' + name + ' in ' + p.city + '</div>' +
+              '<div style="color:#64748b;margin-top:2px;">' + p.action + '</div>' +
+              '<div style="color:#94a3b8;font-size:11px;margin-top:3px;">' + ago + ' minute' + (ago > 1 ? 's' : '') + ' ago &bull; Verified</div>' +
+            '</div>' +
+          '</div>';
+
+        document.body.appendChild(el);
+        requestAnimationFrame(function () {
+          el.style.transform = 'translateY(0)';
+          el.style.opacity = '1';
+        });
+
+        hideTimeout = setTimeout(function () {
+          if (el) {
+            el.style.transform = 'translateY(120%)';
+            el.style.opacity = '0';
+            setTimeout(function () { if (el) { el.remove(); el = null; } }, 400);
+          }
+        }, 4500);
+      }
+
+      // Show first one after 6s, then every 15-30s
+      setTimeout(function () {
+        showProof();
+        setInterval(function () {
+          showProof();
+        }, 15000 + Math.random() * 15000);
+      }, 6000);
+    })();
+  </script>
+
   <!-- Easter Egg: Konami Code -->
   <script>
     (function () {
